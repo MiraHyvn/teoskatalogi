@@ -5,6 +5,19 @@
 </head>
 <body>
   <h1>Teoskatalogi</h1>
+  <p>
+  <a href="/rekisteroidy"> Rekisteröidy </a>
+  </p>
+  <p>
+    Käyttäjien määrä: {{ n }}
+  </p>
+  <hr />
+  {% for tunnus in tunnukset %}
+  <p>
+    {{ tunnus[0] }}
+  </p>
+  <hr />
+  {% endfor %}
 </body>
 </html>
 
