@@ -1,6 +1,8 @@
 # Teoskatalogi
 Tietokanta kuvataideteosten teostietoja varten.
+Sovellus ei ole valmis, ja tällä hetkellä toteutettuna ei ole vielä mitään ominaisuuksia.
 
+## Suunnitellut ominaisuudet
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään katalogiin.
 * Käyttäjä pystyy lisäämään katalogiin teoksia. Lisäksi käyttäjä pystyy muokkaamaan ja poistamaan lisäämiään teostietoja.
 * Käyttäjä näkee katalogiin lisätyt teokset. Käyttäjä näkee sekä itse lisäämänsä että muiden käyttäjien lisäämät teokset.
