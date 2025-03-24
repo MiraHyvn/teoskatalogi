@@ -14,7 +14,13 @@
   </p>
   <hr />
   <h2> Teokset </h2>
-  <p> Tähän tulee luettelo teoksista. Ominaisuutta ei ole vielä toteutettu. </p>
+  {% for teos in teokset %}
+  <p>
+    Nimi: <i>{{ teos["nimi"] }}</i>. 
+    Tekijä: <i>{{teos["kayttaja_id"]}}</i>.
+  </p>
+  <hr />
+  {% endfor %}
   <form action="/luo_teos" method="post">
     <p>
       <input type="text" name="uusi_teos_nimi" />
@@ -37,6 +43,7 @@
   <a href="/rekisteroidy"> Rekisteröidy </a>
   </p>
   {% endif %}
+  
   
 </body>
 </html>

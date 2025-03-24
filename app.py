@@ -13,9 +13,8 @@ app.secret_key = config.salainen_avain
 
 @app.route("/")
 def index():
-    kayttajaluettelo = tietokanta.kysely("SELECT tunnus FROM kayttajat")
-    kayttajia = len(kayttajaluettelo)
-    return render_template("index.html", n = kayttajia, tunnukset = kayttajaluettelo)
+    teosluettelo = tietokanta.kysely("SELECT nimi, kayttaja_id FROM teokset")
+    return render_template("index.html", n = len(teosluettelo), teokset = teosluettelo)
 
 @app.route("/rekisteroidy")
 def rekisteroidy():
@@ -59,3 +58,4 @@ def luo_teos():
     sql = "INSERT INTO teokset (nimi, kayttaja_id) VALUES (?, ?)"
     tietokanta.suorita(sql, [annettu_teoksen_nimi, kayttajatunnus])
     return redirect("/")
+
