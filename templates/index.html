@@ -4,8 +4,7 @@
   <title>Teoskatalogi</title>
 </head>
 <body>
-  <h1>Teoskatalogi</h1>
-  
+  <h1> Teoskatalogi </h1>
   {% if session.kayttajatunnus %}
   <p>
     Olet kirjautunut nimellä {{session.kayttajatunnus}}
@@ -13,6 +12,15 @@
   <p>
     <a href="/kirjaudu_ulos"> Kirjaudu ulos </a>
   </p>
+  <hr />
+  <h2> Teokset </h2>
+  <p> Tähän tulee luettelo teoksista. Ominaisuutta ei ole vielä toteutettu. </p>
+  <form action="/luo_teos" method="post">
+    <p>
+      <input type="text" name="uusi_teos_nimi" />
+      <input type="submit" value="Lisää" />
+    </p>
+  </form>
   {% else %}
   <form action="/kirjaudu" method="post">
     <p>

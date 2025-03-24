@@ -51,3 +51,11 @@ def luo_kayttaja():
 def kirjaudu_ulos():
     del session["kayttajatunnus"]
     return redirect("/")
+    
+@app.route("/luo_teos", methods=["POST"])
+def luo_teos():
+    annettu_teoksen_nimi = request.form["uusi_teos_nimi"]
+    kayttajatunnus = session["kayttajatunnus"]
+    sql = "INSERT INTO teokset (nimi, kayttaja_id) VALUES (?, ?)"
+    tietokanta.suorita(sql, [annettu_teoksen_nimi, kayttajatunnus])
+    return redirect("/")
