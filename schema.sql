@@ -5,7 +5,7 @@ CREATE TABLE kayttajat (
 );
 
 CREATE TABLE teokset (
-	id INTEGER PRIMARY_KEY,
+	id INTEGER PRIMARY KEY,
 	nimi TEXT,
     	kayttaja_id INTEGER REFERENCES kayttajat
 );

@@ -16,12 +16,21 @@
   <h2> Teokset </h2>
   {% for teos in teokset %}
   <p>
+    ID: {{teos["id"]}}
     Nimi: <i>{{ teos["nimi"] }}</i>. 
     Tekijä: <i>{{teos["kayttaja_id"]}}</i>.
+    {% if session.kayttajatunnus == teos["kayttaja_id"] %}
+      <form action="/poista_teos/{{teos["id"]}}" method="post"> 
+        <input type="submit" value="Poista" />
+      </form>
+      <form action="/muokkaa_teosta/{{teos["id"]}}" method="get"> 
+        <input type="submit" value="Muokkaa" />
+      </form>
+    {% endif %}
   </p>
   <hr />
   {% endfor %}
-  <form action="/luo_teos" method="post">
+  <form action="/luo_teos" method="post" class="inline">
     <p>
       <input type="text" name="uusi_teos_nimi" />
       <input type="submit" value="Lisää" />
@@ -43,8 +52,6 @@
   <a href="/rekisteroidy"> Rekisteröidy </a>
   </p>
   {% endif %}
-  
-  
 </body>
 </html>
 

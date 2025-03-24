@@ -8,13 +8,18 @@ import config
 app = Flask(__name__)
 app.secret_key = config.salainen_avain
 
-# Tietokannassa tietokanta.db on oltava taulu, joka on luotu esim näin:
-# CREATE TABLE kayttajat (id INTEGER PRIMARY KEY, tunnus TEXT UNIQUE, salasana_hash TEXT);
+def hae_teokset():
+    sql = "SELECT id, nimi, kayttaja_id FROM teokset"
+    return tietokanta.kysely(sql)
+
+def hae_teos(teos_id):
+    sql = "SELECT id, nimi, kayttaja_id FROM teokset WHERE id = ?"
+    return tietokanta.kysely(sql, [teos_id])[0]
 
 @app.route("/")
 def index():
-    teosluettelo = tietokanta.kysely("SELECT nimi, kayttaja_id FROM teokset")
-    return render_template("index.html", n = len(teosluettelo), teokset = teosluettelo)
+    teosluettelo = hae_teokset()
+    return render_template("index.html", teokset = teosluettelo)
 
 @app.route("/rekisteroidy")
 def rekisteroidy():
@@ -59,3 +64,20 @@ def luo_teos():
     tietokanta.suorita(sql, [annettu_teoksen_nimi, kayttajatunnus])
     return redirect("/")
 
+@app.route("/poista_teos/<int:teos_id>", methods=["POST"])
+def poista_teos(teos_id):
+    sql = "DELETE FROM teokset WHERE id = ?"
+    tietokanta.suorita(sql, [teos_id])
+    return redirect("/")
+
+@app.route("/muokkaa_teosta/<int:teos_id>", methods=["GET", "POST"])
+def muokkaa_teosta(teos_id):
+    teos = hae_teos(teos_id)
+    if request.method == "GET":
+        return render_template("muokkaa_teosta.html", teos = teos)
+    if request.method == "POST":
+        uusi_nimi = request.form["nimi"]
+        # update nimi
+        sql = "UPDATE teokset SET nimi = ? WHERE id = ?"
+        tietokanta.suorita(sql, [uusi_nimi, teos_id])
+    return redirect("/")
