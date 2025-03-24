@@ -5,19 +5,31 @@
 </head>
 <body>
   <h1>Teoskatalogi</h1>
+  
+  {% if session.kayttajatunnus %}
+  <p>
+    Olet kirjautunut nimellä {{session.kayttajatunnus}}
+  </p>
+  <p>
+    <a href="/kirjaudu_ulos"> Kirjaudu ulos </a>
+  </p>
+  {% else %}
+  <form action="/kirjaudu" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="tunnus" />
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="salasana" />
+    </p>
+    <input type="submit" value="Kirjaudu" />
+  </form>
   <p>
   <a href="/rekisteroidy"> Rekisteröidy </a>
   </p>
-  <p>
-    Käyttäjien määrä: {{ n }}
-  </p>
-  <hr />
-  {% for tunnus in tunnukset %}
-  <p>
-    {{ tunnus[0] }}
-  </p>
-  <hr />
-  {% endfor %}
+  {% endif %}
+  
 </body>
 </html>
 
