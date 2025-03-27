@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import redirect, render_template, request, session
-from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import tietokanta, katalogi
 import config
@@ -15,16 +14,12 @@ def index():
 
 @app.route("/rekisteroidy")
 def rekisteroidy():
-    # Pitäisikö olla mahdollista kun ollaan kirjautuneena?
     return render_template("rekisteroidy.html")
 
 @app.route("/kirjaudu", methods=["POST"])
 def kirjaudu():
-    # Ongelma: Jos käyttäjä syöttää tunnuksen, jota ei ole 
-    #   => Internal server error (500)
     annettu_tunnus = request.form["tunnus"]
     annettu_salasana = request.form["salasana"]
-    # Tarkista salasana ja jos oikea, vaihda session-muuttuja
     if katalogi.tarkista_salasana(annettu_tunnus, annettu_salasana):
         session["kayttajatunnus"] = annettu_tunnus
         return redirect("/")
@@ -35,9 +30,8 @@ def kirjaudu():
 def luo_kayttaja():
     uusi_tunnus = request.form["tunnus"]
     uusi_salasana = request.form["salasana"]
-    uusi_hash = generate_password_hash(uusi_salasana)
     try:
-        katalogi.lisaa_kayttaja(uusi_tunnus, uusi_hash)
+        katalogi.lisaa_kayttaja(uusi_tunnus, uusi_salasana)
     except sqlite3.IntegrityError:
         return "Virhe: Käyttäjää ei voitu luoda."
     return redirect("/")
@@ -61,11 +55,10 @@ def poista_teos(teos_id):
 
 @app.route("/muokkaa_teosta/<int:teos_id>", methods=["GET", "POST"])
 def muokkaa_teosta(teos_id):
-    teos = katalogi.hae_teos(teos_id)
     if request.method == "GET":
+        teos = katalogi.hae_teos(teos_id)
         return render_template("muokkaa_teosta.html", teos = teos)
     if request.method == "POST":
         uusi_nimi = request.form["nimi"]
-        sql = "UPDATE teokset SET nimi = ? WHERE id = ?"
-        tietokanta.suorita(sql, [uusi_nimi, teos_id])
+        katalogi.muuta_teosta(teos_id, "nimi", uusi_nimi)
     return redirect("/")

@@ -1,7 +1,8 @@
 import tietokanta
 from werkzeug.security import generate_password_hash, check_password_hash
 
-def lisaa_kayttaja(tunnus, salasana_hash):
+def lisaa_kayttaja(tunnus, salasana):
+    salasana_hash = generate_password_hash(salasana)
     sql = "INSERT INTO kayttajat (tunnus, salasana_hash) VALUES (?, ?)"
     tietokanta.suorita(sql, [tunnus, salasana_hash])
 
@@ -29,3 +30,7 @@ def poista_teos(teoksen_id):
     sql = "DELETE FROM teokset WHERE id = ?"
     tietokanta.suorita(sql, [teoksen_id])
 
+def muuta_teosta(teoksen_id, kentta, uusi_arvo):
+    if kentta == "nimi":
+        sql = "UPDATE teokset SET nimi = ? WHERE id = ?"
+        tietokanta.suorita(sql, [uusi_arvo, teoksen_id])
