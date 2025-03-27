@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Haku</title>
+</head>
+<body>
+  <h1>
+    Haku
+  </h1>
+  <form action="/haku" method="get">
+    <p>
+      Hakusana:
+      {% if hakusana %}
+        <input type="text" name="hakusana" value="{{ hakusana }}" />
+      {% else %}
+        <input type="text" name="hakusana" />
+      {% endif %}
+      <input type="submit" value="Hae" />
+    </p>
+  </form>
+  {% if hakusana %}
+    <hr />
+    <h2> Tulokset </h2>
+    {% for tulos in tulokset %}
+      <p>
+        Nimi: <i>{{ tulos["nimi"] }}</i>. 
+        Tekijä: <i>{{tulos["kayttaja_id"]}}</i>.
+      </p>
+    {% endfor %}
+  {% endif %}
+</body>

@@ -34,3 +34,9 @@ def muuta_teosta(teoksen_id, kentta, uusi_arvo):
     if kentta == "nimi":
         sql = "UPDATE teokset SET nimi = ? WHERE id = ?"
         tietokanta.suorita(sql, [uusi_arvo, teoksen_id])
+
+def haku(hakusana):
+    sql = """SELECT id, nimi, kayttaja_id FROM teokset 
+    WHERE nimi LIKE ? OR kayttaja_id LIKE ?"""
+    return tietokanta.kysely(sql, ["%"+hakusana+"%", "%"+hakusana+"%"])
+

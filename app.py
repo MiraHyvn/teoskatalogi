@@ -62,3 +62,12 @@ def muokkaa_teosta(teos_id):
         uusi_nimi = request.form["nimi"]
         katalogi.muuta_teosta(teos_id, "nimi", uusi_nimi)
     return redirect("/")
+
+@app.route("/haku")
+def haku():
+    hakusana_arg = request.args.get("hakusana")
+    if hakusana_arg:
+        tulokset = katalogi.haku(hakusana_arg) 
+    else:
+        tulokset = []
+    return render_template("haku.html",hakusana=hakusana_arg,tulokset=tulokset)
