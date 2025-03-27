@@ -24,14 +24,12 @@ def kirjaudu():
     #   => Internal server error (500)
     annettu_tunnus = request.form["tunnus"]
     annettu_salasana = request.form["salasana"]
-    # SQL-toiminto: Tarkista salasana
-    sql = "SELECT salasana_hash FROM kayttajat WHERE tunnus = ?"
-    oikea_hash = tietokanta.kysely(sql, [annettu_tunnus])[0][0]
-    if check_password_hash(oikea_hash, annettu_salasana):
+    # Tarkista salasana ja jos oikea, vaihda session-muuttuja
+    if katalogi.tarkista_salasana(annettu_tunnus, annettu_salasana):
         session["kayttajatunnus"] = annettu_tunnus
         return redirect("/")
     else:
-        return "Virhe: Väärä tunnus tai salasana." 
+        return "Virhe: Väärä tunnus tai salasana."
     
 @app.route("/luo_kayttaja", methods=["POST"])
 def luo_kayttaja():

@@ -1,8 +1,17 @@
 import tietokanta
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def lisaa_kayttaja(tunnus, salasana_hash):
     sql = "INSERT INTO kayttajat (tunnus, salasana_hash) VALUES (?, ?)"
     tietokanta.suorita(sql, [tunnus, salasana_hash])
+
+def tarkista_salasana(tunnus, salasana):
+    sql = "SELECT salasana_hash FROM kayttajat WHERE tunnus = ?"
+    oikea_hash = tietokanta.kysely(sql, [tunnus])[0][0]
+    if check_password_hash(oikea_hash, salasana):
+        return True
+    else:   
+        return False 
 
 def hae_kaikki_teokset():
     sql = "SELECT id, nimi, kayttaja_id FROM teokset"
