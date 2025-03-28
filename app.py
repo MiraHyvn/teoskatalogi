@@ -78,5 +78,13 @@ def haku():
 @app.route("/liita_kokoelmaan/<int:teos_id>", methods=["POST"])
 def liita_kokoelmaan(teos_id):
     kokoelman_nimi = request.form["kokoelma"]
-    katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi)
+    katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi, session["kayttajatunnus"])
     return redirect("/")
+
+@app.route("/kokoelmat")
+def kokoelmat():
+    kokoelmat = katalogi.hae_kaikki_kokoelmat()
+    teokset = {}
+    for k in kokoelmat:
+        teokset[k["id"]] = katalogi.hae_teokset_jotka_kuuluvat(k["id"])
+    return render_template("kokoelmat.html", kokoelmat=kokoelmat, teokset=teokset)

@@ -15,7 +15,7 @@ def tarkista_salasana(tunnus, salasana):
         return False 
 
 def hae_kaikki_teokset():
-    sql = "SELECT id, nimi, kayttaja_id FROM teokset"
+    sql = "SELECT id, nimi, kayttaja_id FROM teokset ORDER BY id DESC"
     return tietokanta.kysely(sql)
 
 def hae_teos(teoksen_id):
@@ -40,15 +40,15 @@ def haku(hakusana):
     WHERE nimi LIKE ? OR kayttaja_id LIKE ?"""
     return tietokanta.kysely(sql, ["%"+hakusana+"%", "%"+hakusana+"%"])
 
-def luo_kokoelma(nimi):
-    sql = "INSERT INTO kokoelmat (nimi) VALUES (?)"
-    tietokanta.suorita(sql, [nimi])
+def luo_kokoelma(nimi, kayttaja_id):
+    sql = "INSERT INTO kokoelmat (kayttaja_id, nimi) VALUES (?, ?)"
+    tietokanta.suorita(sql, [kayttaja_id, nimi])
 
-def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi):
+def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi, kayttajatunnus):
     sql1 = "SELECT id FROM kokoelmat WHERE nimi = ?"
     tulos1 = tietokanta.kysely(sql1, [kokoelman_nimi])
     if len(tulos1) == 0:
-        luo_kokoelma(kokoelman_nimi)
+        luo_kokoelma(kokoelman_nimi, kayttajatunnus)
         tulos1 = tietokanta.kysely(sql1, [kokoelman_nimi])
     kokoelman_id = tulos1[0][0]
     sql2 = """INSERT INTO kokoelmanTeokset (teos_id, kokoelma_id)
@@ -57,11 +57,23 @@ def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi):
     return
 
 def hae_kokoelmat_joihin_kuuluu(teoksen_id):
-    sql = """SELECT DISTINCT
-        K.nimi
+    sql = """SELECT
+        K.nimi, K.kayttaja_id
     FROM
         kokoelmat K, teokset T, kokoelmanTeokset KT
     WHERE
         K.id = KT.kokoelma_id AND T.id = KT.teos_id AND T.id = ?"""
     return tietokanta.kysely(sql, [teoksen_id])
 
+def hae_kaikki_kokoelmat():
+    sql = "SELECT id, nimi, kayttaja_id FROM kokoelmat"
+    return tietokanta.kysely(sql)
+    
+def hae_teokset_jotka_kuuluvat(kokoelman_id):
+    sql = """SELECT 
+        T.nimi, T.kayttaja_id
+    FROM
+        teokset T, kokoelmat K, kokoelmanTeokset KT
+    WHERE
+        T.id = KT.teos_id AND K.id = KT.kokoelma_id AND K.id = ?"""
+    return tietokanta.kysely(sql, [kokoelman_id])

@@ -12,6 +12,7 @@ CREATE TABLE teokset (
 
 CREATE TABLE kokoelmat (
 	id INTEGER PRIMARY KEY,
+	kayttaja_id INTEGER REFERENCES kayttajat,
 	nimi TEXT
 );
 
