@@ -40,3 +40,24 @@ def haku(hakusana):
     WHERE nimi LIKE ? OR kayttaja_id LIKE ?"""
     return tietokanta.kysely(sql, ["%"+hakusana+"%", "%"+hakusana+"%"])
 
+def luo_kokoelma(nimi):
+    sql = "INSERT INTO kokoelmat (nimi) VALUES (?)"
+    tietokanta.suorita(sql, [nimi])
+
+def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi):
+    sql1 = "SELECT id FROM kokoelmat WHERE nimi = ?"
+    tulos1 = tietokanta.kysely(sql1, [kokoelman_nimi])
+    if len(tulos1) == 0:
+        luo_kokoelma(kokoelman_nimi)
+        tulos1 = tietokanta.kysely(sql1, [kokoelman_nimi])
+    kokoelman_id = tulos1[0][0]
+    sql2 = """INSERT INTO kokoelmanTeokset (teos_id, kokoelma_id)
+    VALUES (?, ?)"""
+    tietokanta.suorita(sql2, [teoksen_id, kokoelman_id])
+    return
+
+#def hae_kokoelmat_joihin_kuuluu(teoksen_id):
+#    sql = """SELECT nimi FROM kokoelmat
+#    WHERE teos_id = ?"""
+#    return tietokanta.kysely(sql, [teoksen_id])
+

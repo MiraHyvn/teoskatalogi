@@ -71,3 +71,9 @@ def haku():
     else:
         tulokset = []
     return render_template("haku.html",hakusana=hakusana_arg,tulokset=tulokset)
+
+@app.route("/liita_kokoelmaan/<int:teos_id>", methods=["POST"])
+def liita_kokoelmaan(teos_id):
+    kokoelman_nimi = request.form["kokoelma"]
+    katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi)
+    return redirect("/")

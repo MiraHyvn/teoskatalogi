@@ -10,3 +10,13 @@ CREATE TABLE teokset (
     	kayttaja_id INTEGER REFERENCES kayttajat
 );
 
+CREATE TABLE kokoelmat (
+	id INTEGER PRIMARY KEY,
+	nimi TEXT
+);
+
+CREATE TABLE kokoelmanTeokset (
+	id integer PRIMARY KEY,
+	teos_id INTEGER REFERENCES teokset,
+	kokoelma_id INTEGER REFERENCES kokoelmat
+);

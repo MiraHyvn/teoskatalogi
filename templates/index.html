@@ -34,6 +34,10 @@
           <input type="submit" value="Muokkaa" />
         </form>
       {% endif %}
+      <form action="/liita_kokoelmaan/{{teos["id"]}}" method="post">
+        <input type="text" name="kokoelma" />
+        <input type="submit" value="Liitä kokoelmaan" />
+      </form>
     </div>
     <hr />
   {% endfor %}
