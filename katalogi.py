@@ -56,8 +56,12 @@ def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi):
     tietokanta.suorita(sql2, [teoksen_id, kokoelman_id])
     return
 
-#def hae_kokoelmat_joihin_kuuluu(teoksen_id):
-#    sql = """SELECT nimi FROM kokoelmat
-#    WHERE teos_id = ?"""
-#    return tietokanta.kysely(sql, [teoksen_id])
+def hae_kokoelmat_joihin_kuuluu(teoksen_id):
+    sql = """SELECT DISTINCT
+        K.nimi
+    FROM
+        kokoelmat K, teokset T, kokoelmanTeokset KT
+    WHERE
+        K.id = KT.kokoelma_id AND T.id = KT.teos_id AND T.id = ?"""
+    return tietokanta.kysely(sql, [teoksen_id])
 

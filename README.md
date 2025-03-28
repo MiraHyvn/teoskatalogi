@@ -13,6 +13,8 @@ lisäämänsä että muiden käyttäjien lisäämät teokset.
 * Käyttäjä pystyy etsimään teoksia teoksen nimen tai tekijän nimen perusteella. 
 Käyttäjä pystyy hakemaan sekä itse lisäämiään että muiden käyttäjien lisäämiä 
 teoksia.
+* Käyttäjä voi luoda kaikista katalogissa olevista teoksista kokoelmia. Teoksen
+tiedoissa näkyy kaikki kokoelmat joihin se kuuluu.
 
 ## Suunnitellut ominaisuudet
 * Katalogissa on käyttäjäsivut, jotka näyttävät jokaisesta käyttäjästä 
@@ -21,8 +23,7 @@ tilastoja ja käyttäjän lisäämät teokset.
 missä näyttelyssä teos on esitetty; teoksen tyyppi kuten taulu, veistos tai 
 video; tai kokoluokitus kuten pieni, keskikokoinen tai suuri. Mahdolliset 
 luokat ovat tietokannassa.
-* Käyttäjä voi luoda kaikista katalogissa olevista teoksista kokoelmia. Teoksen
-tiedoissa näkyy kaikki kokoelmat joihin se kuuluu.
+
 
 ## Ratkaisemattomia ongelmia
 Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
@@ -36,3 +37,6 @@ Rekisteröityminen on mahdollista vaikka ollaan jo kirjautuneena sisään.
 Muiden käyttäjien lisäämien teosten muokkaaminen on mahdollista suoran URL:n 
 kautta.
 
+Syötteet voivat olla tyhjiä. (Uuden teoksen nimi, kokoelman nimi)
+
+Kokoelmaan pitäisi voida liittää teoksia vain sen tekijän.

@@ -10,7 +10,10 @@ app.secret_key = config.salainen_avain
 @app.route("/")
 def index():
     teokset = katalogi.hae_kaikki_teokset()
-    return render_template("index.html", teokset = teokset)
+    kokoelmat = {}
+    for t in teokset:
+        kokoelmat[t["id"]] = katalogi.hae_kokoelmat_joihin_kuuluu(t["id"])
+    return render_template("index.html", teokset=teokset, kokoelmat=kokoelmat)
 
 @app.route("/rekisteroidy")
 def rekisteroidy():

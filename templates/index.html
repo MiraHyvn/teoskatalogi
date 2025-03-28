@@ -18,14 +18,21 @@
   <hr />
   <h2> Teokset </h2>
   <form action="/luo_teos" method="post">
+    Lisää uusi teos: 
     <input type="text" name="uusi_teos_nimi" />
     <input type="submit" value="Lisää" />
   </form>
   <hr />
   {% for teos in teokset %}
     <div>
-      Nimi: <i>{{ teos["nimi"] }}</i>. 
-      Tekijä: <i>{{teos["kayttaja_id"]}}</i>.
+      <h3>{{ teos["nimi"] }}</h3>
+      Tekijä: <i>{{teos["kayttaja_id"]}}</i>
+      <p> 
+        Sisältyy kokoelmiin: 
+        {% for k in kokoelmat[teos["id"]] %}
+          {{ k["nimi"] }}
+        {% endfor %}
+      </p>
       {% if session.kayttajatunnus == teos["kayttaja_id"] %}
         <form action="/poista_teos/{{teos["id"]}}" method="post" style="display:inline"> 
           <input type="submit" value="Poista" />
@@ -34,9 +41,10 @@
           <input type="submit" value="Muokkaa" />
         </form>
       {% endif %}
-      <form action="/liita_kokoelmaan/{{teos["id"]}}" method="post">
+      <form action="/liita_kokoelmaan/{{teos["id"]}}" method="post" style="display:inline">
+        Liitä kokoelmaan:
         <input type="text" name="kokoelma" />
-        <input type="submit" value="Liitä kokoelmaan" />
+        <input type="submit" value="Liitä" />
       </form>
     </div>
     <hr />
