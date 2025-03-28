@@ -7,7 +7,7 @@
   <h1> Teoskatalogi </h1>
   {% if session.kayttajatunnus %}
   <p>
-    Olet kirjautunut nimellä {{session.kayttajatunnus}}
+    Olet kirjautunut nimellä <i> {{session.kayttajatunnus}} </i>
   </p>
   <p>
     <a href="/haku"> Haku </a>
@@ -17,28 +17,26 @@
   </p>
   <hr />
   <h2> Teokset </h2>
-  {% for teos in teokset %}
-  <p>
-    ID: {{teos["id"]}}
-    Nimi: <i>{{ teos["nimi"] }}</i>. 
-    Tekijä: <i>{{teos["kayttaja_id"]}}</i>.
-    {% if session.kayttajatunnus == teos["kayttaja_id"] %}
-      <form action="/poista_teos/{{teos["id"]}}" method="post"> 
-        <input type="submit" value="Poista" />
-      </form>
-      <form action="/muokkaa_teosta/{{teos["id"]}}" method="get"> 
-        <input type="submit" value="Muokkaa" />
-      </form>
-    {% endif %}
-  </p>
-  <hr />
-  {% endfor %}
-  <form action="/luo_teos" method="post" class="inline">
-    <p>
-      <input type="text" name="uusi_teos_nimi" />
-      <input type="submit" value="Lisää" />
-    </p>
+  <form action="/luo_teos" method="post">
+    <input type="text" name="uusi_teos_nimi" />
+    <input type="submit" value="Lisää" />
   </form>
+  <hr />
+  {% for teos in teokset %}
+    <div>
+      Nimi: <i>{{ teos["nimi"] }}</i>. 
+      Tekijä: <i>{{teos["kayttaja_id"]}}</i>.
+      {% if session.kayttajatunnus == teos["kayttaja_id"] %}
+        <form action="/poista_teos/{{teos["id"]}}" method="post" style="display:inline"> 
+          <input type="submit" value="Poista" />
+        </form>
+        <form action="/muokkaa_teosta/{{teos["id"]}}" method="get" style="display:inline"> 
+          <input type="submit" value="Muokkaa" />
+        </form>
+      {% endif %}
+    </div>
+    <hr />
+  {% endfor %}
   {% else %}
   <form action="/kirjaudu" method="post">
     <p>
