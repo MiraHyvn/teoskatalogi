@@ -34,9 +34,6 @@ Jos kirjautuessa syötetään tunnus jota ei ole, tulee "internal server error"
 
 Rekisteröityminen on mahdollista vaikka ollaan jo kirjautuneena sisään.
 
-Muiden käyttäjien lisäämien teosten muokkaaminen on mahdollista suoran URL:n 
-kautta.
-
 Syötteet voivat olla tyhjiä. (Uuden teoksen nimi, kokoelman nimi)
 
 Kokoelmaan pitäisi voida liittää teoksia vain sen tekijän.

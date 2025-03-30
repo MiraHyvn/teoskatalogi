@@ -57,14 +57,19 @@ def luo_teos():
 def poista_teos(teos_id):
     vaadi_kirjautuminen()
     teos = katalogi.hae_teos(teos_id)
-    katalogi.poista_teos(teos_id)
+    if session["kayttaja_id"] == teos["kayttaja_id"]:
+        katalogi.poista_teos(teos_id)
+    else:
+        abort(403)
     return redirect("/")
 
 @app.route("/muokkaa_teosta/<int:teos_id>", methods=["GET", "POST"])
 def muokkaa_teosta(teos_id):
     vaadi_kirjautuminen()
+    teos = katalogi.hae_teos(teos_id)
+    if session["kayttaja_id"] != teos["kayttaja_id"]:
+        abort(403)
     if request.method == "GET":
-        teos = katalogi.hae_teos(teos_id)
         return render_template("muokkaa_teosta.html", teos = teos)
     if request.method == "POST":
         uusi_nimi = request.form["nimi"]
