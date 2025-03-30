@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 import sqlite3
 import tietokanta, katalogi
 import config
@@ -46,6 +46,7 @@ def kirjaudu_ulos():
     
 @app.route("/luo_teos", methods=["POST"])
 def luo_teos():
+    vaadi_kirjautuminen()
     annettu_teoksen_nimi = request.form["uusi_teos_nimi"]
     kayttajatunnus = session["kayttajatunnus"]
     katalogi.lisaa_teos(annettu_teoksen_nimi, kayttajatunnus)
@@ -53,11 +54,13 @@ def luo_teos():
 
 @app.route("/poista_teos/<int:teos_id>", methods=["POST"])
 def poista_teos(teos_id):
+    vaadi_kirjautuminen()
     katalogi.poista_teos(teos_id)
     return redirect("/")
 
 @app.route("/muokkaa_teosta/<int:teos_id>", methods=["GET", "POST"])
 def muokkaa_teosta(teos_id):
+    vaadi_kirjautuminen()
     if request.method == "GET":
         teos = katalogi.hae_teos(teos_id)
         return render_template("muokkaa_teosta.html", teos = teos)
@@ -77,6 +80,7 @@ def haku():
 
 @app.route("/liita_kokoelmaan/<int:teos_id>", methods=["POST"])
 def liita_kokoelmaan(teos_id):
+    vaadi_kirjautuminen()
     kokoelman_nimi = request.form["kokoelma"]
     katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi, session["kayttajatunnus"])
     return redirect("/")
@@ -88,3 +92,7 @@ def kokoelmat():
     for k in kokoelmat:
         teokset[k["id"]] = katalogi.hae_teokset_jotka_kuuluvat(k["id"])
     return render_template("kokoelmat.html", kokoelmat=kokoelmat, teokset=teokset)
+    
+def vaadi_kirjautuminen():
+    if "kayttajatunnus" not in session:
+        abort(403)
