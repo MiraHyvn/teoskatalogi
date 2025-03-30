@@ -23,8 +23,9 @@ def rekisteroidy():
 def kirjaudu():
     annettu_tunnus = request.form["tunnus"]
     annettu_salasana = request.form["salasana"]
-    if katalogi.tarkista_salasana(annettu_tunnus, annettu_salasana):
-        session["kayttajatunnus"] = annettu_tunnus
+    kayttaja_id = katalogi.tarkista_salasana(annettu_tunnus, annettu_salasana)
+    if kayttaja_id:
+        session["kayttaja_id"] = kayttaja_id
         return redirect("/")
     else:
         return "Virhe: Väärä tunnus tai salasana."
@@ -41,20 +42,21 @@ def luo_kayttaja():
 
 @app.route("/kirjaudu_ulos")
 def kirjaudu_ulos():
-    del session["kayttajatunnus"]
+    del session["kayttaja_id"]
     return redirect("/")
     
 @app.route("/luo_teos", methods=["POST"])
 def luo_teos():
     vaadi_kirjautuminen()
     annettu_teoksen_nimi = request.form["uusi_teos_nimi"]
-    kayttajatunnus = session["kayttajatunnus"]
-    katalogi.lisaa_teos(annettu_teoksen_nimi, kayttajatunnus)
+    kayttaja_id = session["kayttaja_id"]
+    katalogi.lisaa_teos(annettu_teoksen_nimi, kayttaja_id)
     return redirect("/")
 
 @app.route("/poista_teos/<int:teos_id>", methods=["POST"])
 def poista_teos(teos_id):
     vaadi_kirjautuminen()
+    teos = katalogi.hae_teos(teos_id)
     katalogi.poista_teos(teos_id)
     return redirect("/")
 
@@ -82,7 +84,7 @@ def haku():
 def liita_kokoelmaan(teos_id):
     vaadi_kirjautuminen()
     kokoelman_nimi = request.form["kokoelma"]
-    katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi, session["kayttajatunnus"])
+    katalogi.liita_teos_kokoelmaan(teos_id, kokoelman_nimi, session["kayttaja_id"])
     return redirect("/")
 
 @app.route("/kokoelmat")
@@ -94,5 +96,5 @@ def kokoelmat():
     return render_template("kokoelmat.html", kokoelmat=kokoelmat, teokset=teokset)
     
 def vaadi_kirjautuminen():
-    if "kayttajatunnus" not in session:
+    if "kayttaja_id" not in session:
         abort(403)

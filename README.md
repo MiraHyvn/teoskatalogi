@@ -40,3 +40,7 @@ kautta.
 Syötteet voivat olla tyhjiä. (Uuden teoksen nimi, kokoelman nimi)
 
 Kokoelmaan pitäisi voida liittää teoksia vain sen tekijän.
+
+Jos teoksia poistetaan ja lisätään, kokoelmien viitteet eivät pysy oikeina. 
+(Esimerkiksi jos teos #4 on liitetty kokoelmaan #1, ja teos #4 poistetaan, ja 
+luodaan uusi teos joka saa indeksikseen 4, uusi teos sisältyy kokoelmaan #1.) 

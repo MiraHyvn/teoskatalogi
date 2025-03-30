@@ -5,10 +5,7 @@
 </head>
 <body>
   <h1> Teoskatalogi </h1>
-  {% if session.kayttajatunnus %}
-  <p>
-    Olet kirjautunut nimellä <i> {{session.kayttajatunnus}} </i>
-  </p>
+  {% if session.kayttaja_id %}
   <p>
     <a href="/haku"> Haku </a>
   </p>
@@ -28,14 +25,15 @@
   {% for teos in teokset %}
     <div>
       <h3>{{ teos["nimi"] }}</h3>
-      Tekijä: <i>{{teos["kayttaja_id"]}}</i>
+      ID: {{teos["id"] }}
+      Tekijä: <i>{{teos["tunnus"]}}</i>
       <p> 
         Sisältyy kokoelmiin: 
         {% for k in kokoelmat[teos["id"]] %}
           {{ k["nimi"] }}
         {% endfor %}
       </p>
-      {% if session.kayttajatunnus == teos["kayttaja_id"] %}
+      {% if session.kayttaja_id == teos["kayttaja_id"] %}
         <form action="/poista_teos/{{teos["id"]}}" method="post" style="display:inline"> 
           <input type="submit" value="Poista" />
         </form>

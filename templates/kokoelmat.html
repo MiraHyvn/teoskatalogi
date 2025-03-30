@@ -7,7 +7,7 @@
   <h1> Kokoelmat </h1>
   {% for k in kokoelmat %}
     <h2> {{k["nimi"]}} </h2>
-    <p> Tekijä: {{ k["kayttaja_id"] }} </p>
+    <p> Tekijä: {{ k["tunnus"] }} </p>
     <p>
     Teokset: 
     {% for t in teokset[k["id"]] %}
