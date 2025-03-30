@@ -34,6 +34,8 @@ def kirjaudu():
 def luo_kayttaja():
     uusi_tunnus = request.form["tunnus"]
     uusi_salasana = request.form["salasana"]
+    if len(uusi_tunnus) > 50 or len(uusi_tunnus) == 0 or len(uusi_salasana) > 50:
+        abort(403)
     try:
         katalogi.lisaa_kayttaja(uusi_tunnus, uusi_salasana)
     except sqlite3.IntegrityError:
@@ -49,6 +51,8 @@ def kirjaudu_ulos():
 def luo_teos():
     vaadi_kirjautuminen()
     annettu_teoksen_nimi = request.form["uusi_teos_nimi"]
+    if len(annettu_teoksen_nimi) == 0 or len(annettu_teoksen_nimi) > 50:    
+        abort(403)
     kayttaja_id = session["kayttaja_id"]
     katalogi.lisaa_teos(annettu_teoksen_nimi, kayttaja_id)
     return redirect("/")

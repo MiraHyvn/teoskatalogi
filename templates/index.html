@@ -18,7 +18,7 @@
   <h2> Teokset </h2>
   <form action="/luo_teos" method="post">
     Lisää uusi teos: 
-    <input type="text" name="uusi_teos_nimi" />
+    <input type="text" name="uusi_teos_nimi" maxlength="50"/>
     <input type="submit" value="Lisää" />
   </form>
   <hr />
@@ -43,7 +43,7 @@
       {% endif %}
       <form action="/liita_kokoelmaan/{{teos["id"]}}" method="post" style="display:inline">
         Liitä kokoelmaan:
-        <input type="text" name="kokoelma" />
+        <input type="text" name="kokoelma" maxlength="50"/>
         <input type="submit" value="Liitä" />
       </form>
     </div>
