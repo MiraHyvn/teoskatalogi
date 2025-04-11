@@ -6,6 +6,14 @@ def create_user(new_username, new_password):
     sql = "INSERT INTO Users (name, password_hash) VALUES (?, ?)"
     database.execute(sql, [new_username, new_hash])
 
+def get_user_name(user_id):
+	sql = "SELECT name FROM users WHERE id = ?"
+	query_result = database.query(sql, [user_id])
+	if query_result:
+		return query_result[0]["name"]
+	else:
+		return None
+
 def check_password(given_username, given_password):
     sql = "SELECT password_hash, id FROM Users WHERE name = ?"
     query_result = database.query(sql, [given_username])
@@ -34,6 +42,15 @@ def get_work(work_id):
         W.user_id = U.id AND W.id = ?
         """
     return database.query(sql, [work_id])[0]
+
+def get_works_by_user(user_id):
+	sql = """SELECT DISTINCT
+		W.id, W.title, W.user_id, U.name AS user_name
+	FROM
+		Works W, Users U
+	WHERE
+		W.user_id = ? AND W.user_id = U.id"""
+	return database.query(sql, [user_id])
 
 def create_work(new_work_title, creator_user_id):
     sql = "INSERT INTO Works (title, user_id) VALUES (?, ?)"
@@ -93,6 +110,16 @@ def get_all_collections():
     """
     return database.query(sql)
     
+def get_collections_by_user(user_id):
+	sql = """SELECT
+		C.id, C.title, C.user_id, U.name AS user_name
+	FROM
+		Collections C, Users U
+	WHERE
+		C.user_id = U.id AND C.user_id = ?
+	"""
+	return database.query(sql, [user_id])
+
 def get_works_included_in(collection_id):
     sql = """SELECT 
         W.title, W.user_id
@@ -101,3 +128,25 @@ def get_works_included_in(collection_id):
     WHERE
         W.id = WC.work_id AND C.id = WC.collection_id AND C.id = ?"""
     return database.query(sql, [collection_id])
+
+def get_user_stats(user_id):
+	# How many works and collections added by user
+	# How many times a work by user is added to a collection
+	sql1 = """SELECT COUNT(id) FROM Works WHERE user_id = ?"""
+	work_count = database.query(sql1, [user_id])[0][0]
+	sql2 = """SELECT COUNT(id) FROM Collections WHERE user_id = ?"""
+	collection_count = database.query(sql2, [user_id])[0][0]
+	sql3 = """SELECT
+		COUNT(WC.id)
+	FROM 
+		WorksInCollection WC, Works W 
+	WHERE
+		W.user_id = ? AND WC.work_id = W.id
+	"""
+	pick_count = database.query(sql3, [user_id])[0][0]
+	result = {}
+	result["works"] = work_count
+	result["collections"] = collection_count
+	result["picks"] = pick_count
+	return result
+		

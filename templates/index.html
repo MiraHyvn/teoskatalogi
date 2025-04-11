@@ -7,6 +7,9 @@
   <h1> Teoskatalogi </h1>
   {% if session.user_id %}
   <p>
+	<a href="/kayttaja/{{session.user_id}}"> {{session.user_name}} </a>
+  </p>
+  <p>
     <a href="/haku"> Haku </a>
   </p>
   <p>

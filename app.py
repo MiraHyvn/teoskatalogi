@@ -26,6 +26,7 @@ def login():
     valid_user_id = catalogue.check_password(username_input, password_input)
     if valid_user_id:
         session["user_id"] = valid_user_id
+        session["user_name"] = catalogue.get_user_name(valid_user_id)
         return redirect("/")
     else:
         return "Virhe: Väärä tunnus tai salasana."
@@ -45,6 +46,7 @@ def create_user():
 @app.route("/kirjaudu_ulos")
 def logout():
     del session["user_id"]
+    del session["user_name"]
     return redirect("/")
     
 @app.route("/luo_teos", methods=["POST"])
@@ -107,3 +109,10 @@ def collections():
 def require_login():
     if "user_id" not in session:
         abort(403)
+    
+@app.route("/kayttaja/<int:user_id>")
+def user(user_id):
+	w = catalogue.get_works_by_user(user_id)
+	c = catalogue.get_collections_by_user(user_id)
+	s = catalogue.get_user_stats(user_id)
+	return render_template("user.html", works = w, collections = c, stats = s)

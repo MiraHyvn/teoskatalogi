@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Käyttäjäsivu </title>
+</head>
+<body>
+	<h1> {{ session.user_name }} </h1>
+	<h2> Tilastoja </h2>
+	<p> Käyttäjä on lisännyt {{stats["works"]}} teosta ja {{stats["collections"]}} kokoelmaa.</p>
+	<p> Käyttäjän lisäämiä teoksia on valittu kokoelmiin yhteensä {{stats["picks"]}} kertaa. </p>
+	<h2> Teokset </h2>
+	<ul>
+	{% for w in works %}
+      <li>{{ w["title"] }}</li>
+	{% endfor %}
+	</ul>
+	<h2> Kokoelmat </h2>
+	<ul>
+	{% for c in collections %}
+      <li>{{ c["title"] }}</li>
+	{% endfor %}
+	</ul>
+</body>
+</html>
