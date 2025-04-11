@@ -24,16 +24,16 @@
   <hr />
   {% for teos in teokset %}
     <div>
-      <h3>{{ teos["nimi"] }}</h3>
+      <h3>{{ teos["name"] }}</h3>
       ID: {{teos["id"] }}
-      Tekijä: <i>{{teos["tunnus"]}}</i>
+      Tekijä: <i>{{teos["user_name"]}}</i>
       <p> 
         Sisältyy kokoelmiin: 
         {% for k in kokoelmat[teos["id"]] %}
-          {{ k["nimi"] }}
+          {{ k["name"] }}
         {% endfor %}
       </p>
-      {% if session.kayttaja_id == teos["kayttaja_id"] %}
+      {% if session.kayttaja_id == teos["user_id"] %}
         <form action="/poista_teos/{{teos["id"]}}" method="post" style="display:inline"> 
           <input type="submit" value="Poista" />
         </form>

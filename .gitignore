@@ -1,4 +1,4 @@
 __pycache__/
 venv/
-tietokanta.db
+database.db
 

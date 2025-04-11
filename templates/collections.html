@@ -6,12 +6,12 @@
 <body>
   <h1> Kokoelmat </h1>
   {% for k in kokoelmat %}
-    <h2> {{k["nimi"]}} </h2>
-    <p> Tekijä: {{ k["tunnus"] }} </p>
+    <h2> {{k["name"]}} </h2>
+    <p> Tekijä: {{ k["user_name"] }} </p>
     <p>
     Teokset: 
     {% for t in teokset[k["id"]] %}
-      {{t["nimi"]}}, 
+      {{t["name"]}}, 
     {% endfor %}
     </p>
   {% endfor %}

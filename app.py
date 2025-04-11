@@ -5,7 +5,7 @@ import catalogue
 import config
 
 app = Flask(__name__)
-app.secret_key = config.salainen_avain
+app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
@@ -61,7 +61,7 @@ def luo_teos():
 def poista_teos(teos_id):
     vaadi_kirjautuminen()
     teos = catalogue.hae_teos(teos_id)
-    if session["kayttaja_id"] == teos["kayttaja_id"]:
+    if session["kayttaja_id"] == teos["user_id"]:
         catalogue.poista_teos(teos_id)
     else:
         abort(403)
@@ -71,7 +71,7 @@ def poista_teos(teos_id):
 def muokkaa_teosta(teos_id):
     vaadi_kirjautuminen()
     teos = catalogue.hae_teos(teos_id)
-    if session["kayttaja_id"] != teos["kayttaja_id"]:
+    if session["kayttaja_id"] != teos["user_id"]:
         abort(403)
     if request.method == "GET":
         return render_template("edit_work.html", teos = teos)

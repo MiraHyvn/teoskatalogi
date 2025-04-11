@@ -3,99 +3,101 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 def lisaa_kayttaja(tunnus, salasana):
     salasana_hash = generate_password_hash(salasana)
-    sql = "INSERT INTO kayttajat (tunnus, salasana_hash) VALUES (?, ?)"
+    sql = "INSERT INTO Users (name, password_hash) VALUES (?, ?)"
     database.suorita(sql, [tunnus, salasana_hash])
 
 def tarkista_salasana(tunnus, salasana):
-    sql = "SELECT salasana_hash, id FROM kayttajat WHERE tunnus = ?"
+    sql = "SELECT password_hash, id FROM Users WHERE name = ?"
     tulos = database.kysely(sql, [tunnus])
     if len(tulos) == 1:
-        oikea_hash = tulos[0]["salasana_hash"]
+        oikea_hash = tulos[0]["password_hash"]
         if check_password_hash(oikea_hash, salasana):
             return tulos[0]["id"]
     return None
 
 def hae_kaikki_teokset():
-    #sql = "SELECT id, nimi, kayttaja_id FROM teokset ORDER BY id DESC"
     sql = """SELECT 
-        T.id, T.nimi, T.kayttaja_id, K.tunnus
+        W.id, W.name, W.user_id, U.name AS user_name
     FROM 
-        teokset T, kayttajat K
+        Works W, Users U
     WHERE
-        T.kayttaja_id = K.id
+        W.user_id = U.id
         """    
     return database.kysely(sql)
 
 def hae_teos(teoksen_id):
-    #sql = "SELECT id, nimi, kayttaja_id FROM teokset WHERE id = ?"
     sql = """SELECT 
-        T.id, T.nimi, T.kayttaja_id, K.tunnus
+        W.id, W.name, W.user_id, U.name AS user_name
     FROM 
-        teokset T, kayttajat K
+        Works W, Users U
     WHERE
-        T.kayttaja_id = K.id AND T.id = ?
+        W.user_id = U.id AND W.id = ?
         """
     return database.kysely(sql, [teoksen_id])[0]
 
 def lisaa_teos(teoksen_nimi, tekijan_id):
-    sql = "INSERT INTO teokset (nimi, kayttaja_id) VALUES (?, ?)"
+    sql = "INSERT INTO Works (name, user_id) VALUES (?, ?)"
     database.suorita(sql, [teoksen_nimi, tekijan_id])
 
 def poista_teos(teoksen_id):
-    sql = "DELETE FROM teokset WHERE id = ?"
+    sql = "DELETE FROM Works WHERE id = ?"
     database.suorita(sql, [teoksen_id])
 
 def muuta_teosta(teoksen_id, kentta, uusi_arvo):
     if kentta == "nimi":
-        sql = "UPDATE teokset SET nimi = ? WHERE id = ?"
+        sql = "UPDATE Works SET name = ? WHERE id = ?"
         database.suorita(sql, [uusi_arvo, teoksen_id])
 
 def haku(hakusana):
-    sql = """SELECT id, nimi, kayttaja_id FROM teokset 
-    WHERE nimi LIKE ? OR kayttaja_id LIKE ?"""
+    sql = """SELECT 
+    		W.id, W.name, W.user_id, U.name AS user_name 	
+	FROM 
+		Works W, Users U 
+    WHERE 
+    		W.name LIKE ? OR user_name LIKE ?"""
     return database.kysely(sql, ["%"+hakusana+"%", "%"+hakusana+"%"])
 
 def luo_kokoelma(nimi, kayttaja_id):
-    sql = "INSERT INTO kokoelmat (kayttaja_id, nimi) VALUES (?, ?)"
+    sql = "INSERT INTO Collections (user_id, name) VALUES (?, ?)"
     database.suorita(sql, [kayttaja_id, nimi])
 
 def liita_teos_kokoelmaan(teoksen_id, kokoelman_nimi, kayttajan_id):
-    sql1 = "SELECT id FROM kokoelmat WHERE nimi = ?"
+    sql1 = "SELECT id FROM Collections WHERE name = ?"
     tulos1 = database.kysely(sql1, [kokoelman_nimi])
     if len(tulos1) == 0:
         luo_kokoelma(kokoelman_nimi, kayttajan_id)
         tulos1 = database.kysely(sql1, [kokoelman_nimi])
     kokoelman_id = tulos1[0][0]
-    sql2 = """INSERT INTO kokoelmanTeokset (teos_id, kokoelma_id)
+    sql2 = """INSERT INTO WorksInCollection (work_id, collection_id)
     VALUES (?, ?)"""
     database.suorita(sql2, [teoksen_id, kokoelman_id])
     return
 
 def hae_kokoelmat_joihin_kuuluu(teoksen_id):
     sql = """SELECT
-        K.nimi, K.kayttaja_id, Ka.tunnus
+        C.name, C.user_id, U.name AS user_name
     FROM
-        kokoelmat K, teokset T, kokoelmanTeokset KT, kayttajat Ka
+        Collections C, Works W, WorksInCollection WC, Users U
     WHERE
-        K.id = KT.kokoelma_id AND T.id = KT.teos_id AND T.id = ?
-        AND Ka.id = K.kayttaja_id""" 
+        C.id = WC.collection_id AND W.id = WC.work_id AND W.id = ?
+        AND U.id = C.user_id""" 
     return database.kysely(sql, [teoksen_id])
 
 def hae_kaikki_kokoelmat():
     sql = """SELECT 
-        K.id, K.nimi, K.kayttaja_id, Ka.tunnus
+        C.id, C.name, C.user_id, U.name AS user_name
     FROM 
-        kokoelmat K, kayttajat Ka
+        Collections C, Users U
     WHERE
-        Ka.id = K.kayttaja_id
+        U.id = C.user_id
     """
     return database.kysely(sql)
     
 def hae_teokset_jotka_kuuluvat(kokoelman_id):
     sql = """SELECT 
-        T.nimi, T.kayttaja_id
+        W.name, W.user_id
     FROM
-        teokset T, kokoelmat K, kokoelmanTeokset KT
+        Works W, Collections C, WorksInCollection WC
     WHERE
-        T.id = KT.teos_id AND K.id = KT.kokoelma_id AND K.id = ?"""
+        W.id = WC.work_id AND C.id = WC.collection_id AND C.id = ?"""
     return database.kysely(sql, [kokoelman_id])

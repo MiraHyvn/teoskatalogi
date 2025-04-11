@@ -23,8 +23,8 @@
     <h2> Tulokset </h2>
     {% for tulos in tulokset %}
       <p>
-        Nimi: <i>{{ tulos["nimi"] }}</i>. 
-        Tekijä: <i>{{tulos["kayttaja_id"]}}</i>.
+        Nimi: <i>{{ tulos["name"] }}</i>. 
+        Tekijä: <i>{{tulos["user_name"]}}</i>.
       </p>
     {% endfor %}
   {% endif %}

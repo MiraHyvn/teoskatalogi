@@ -1,23 +1,23 @@
-CREATE TABLE kayttajat (
+CREATE TABLE Users (
 	id INTEGER PRIMARY KEY,
-	tunnus TEXT UNIQUE, 
-	salasana_hash TEXT
+	name TEXT UNIQUE, 
+	password_hash TEXT
 );
 
-CREATE TABLE teokset (
+CREATE TABLE Works (
 	id INTEGER PRIMARY KEY,
-	nimi TEXT,
-    	kayttaja_id INTEGER REFERENCES kayttajat
+	name TEXT,
+    	user_id INTEGER REFERENCES Users
 );
 
-CREATE TABLE kokoelmat (
+CREATE TABLE Collections (
 	id INTEGER PRIMARY KEY,
-	kayttaja_id INTEGER REFERENCES kayttajat,
-	nimi TEXT
+	name TEXT,
+	user_id INTEGER REFERENCES Users
 );
 
-CREATE TABLE kokoelmanTeokset (
+CREATE TABLE WorksInCollection (
 	id integer PRIMARY KEY,
-	teos_id INTEGER REFERENCES teokset,
-	kokoelma_id INTEGER REFERENCES kokoelmat
+	work_id INTEGER REFERENCES Works,
+	collection_id INTEGER REFERENCES Collections
 );
