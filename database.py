@@ -1,20 +1,20 @@
 import sqlite3
 from flask import g
 
-def luo_yhteys():
-    yhteys = sqlite3.connect("database.db")
-    yhteys.row_factory = sqlite3.Row
-    return yhteys
+def connect():
+    connection = sqlite3.connect("database.db")
+    connection.row_factory = sqlite3.Row
+    return connection
 
-def suorita(sql, parametrit=[]):
-    yhteys = luo_yhteys()
-    tulos = yhteys.execute(sql, parametrit)
-    yhteys.commit()
-    yhteys.close()
+def execute(sql, parameters=[]):
+    connection = connect()
+    result = connection.execute(sql, parameters)
+    connection.commit()
+    connection.close()
 
-def kysely(sql, parametrit=[]):
-    yhteys = luo_yhteys()
-    tulos = yhteys.execute(sql, parametrit).fetchall()
-    yhteys.close()
-    return tulos
+def query(sql, parameters=[]):
+    connection = connect()
+    result = connection.execute(sql, parameters).fetchall()
+    connection.close()
+    return result
 
