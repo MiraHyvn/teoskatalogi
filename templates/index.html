@@ -5,7 +5,7 @@
 </head>
 <body>
   <h1> Teoskatalogi </h1>
-  {% if session.kayttaja_id %}
+  {% if session.user_id %}
   <p>
     <a href="/haku"> Haku </a>
   </p>
@@ -18,32 +18,32 @@
   <h2> Teokset </h2>
   <form action="/luo_teos" method="post">
     Lisää uusi teos: 
-    <input type="text" name="uusi_teos_nimi" maxlength="50"/>
+    <input type="text" name="new_work_name_input" maxlength="50"/>
     <input type="submit" value="Lisää" />
   </form>
   <hr />
-  {% for teos in teokset %}
+  {% for w in works %}
     <div>
-      <h3>{{ teos["name"] }}</h3>
-      ID: {{teos["id"] }}
-      Tekijä: <i>{{teos["user_name"]}}</i>
+      <h3>{{ w["name"] }}</h3>
+      ID: {{w["id"] }}
+      Tekijä: <i>{{w["user_name"]}}</i>
       <p> 
         Sisältyy kokoelmiin: 
-        {% for k in kokoelmat[teos["id"]] %}
-          {{ k["name"] }}
+        {% for c in collections[w["id"]] %}
+          {{ c["name"] }}
         {% endfor %}
       </p>
-      {% if session.kayttaja_id == teos["user_id"] %}
-        <form action="/poista_teos/{{teos["id"]}}" method="post" style="display:inline"> 
+      {% if session.user_id == w["user_id"] %}
+        <form action="/poista_teos/{{w["id"]}}" method="post" style="display:inline"> 
           <input type="submit" value="Poista" />
         </form>
-        <form action="/muokkaa_teosta/{{teos["id"]}}" method="get" style="display:inline"> 
+        <form action="/muokkaa_teosta/{{w["id"]}}" method="get" style="display:inline"> 
           <input type="submit" value="Muokkaa" />
         </form>
       {% endif %}
-      <form action="/liita_kokoelmaan/{{teos["id"]}}" method="post" style="display:inline">
+      <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
         Liitä kokoelmaan:
-        <input type="text" name="kokoelma" maxlength="50"/>
+        <input type="text" name="collection_name_input" maxlength="50"/>
         <input type="submit" value="Liitä" />
       </form>
     </div>
@@ -53,11 +53,11 @@
   <form action="/kirjaudu" method="post">
     <p>
       Tunnus: <br />
-      <input type="text" name="tunnus" />
+      <input type="text" name="username_input" />
     </p>
     <p>
       Salasana: <br />
-      <input type="password" name="salasana" />
+      <input type="password" name="password_input" />
     </p>
     <input type="submit" value="Kirjaudu" />
   </form>

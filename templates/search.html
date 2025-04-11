@@ -10,21 +10,21 @@
   <form action="/haku" method="get">
     <p>
       Hakusana:
-      {% if hakusana %}
-        <input type="text" name="hakusana" value="{{ hakusana }}" />
+      {% if search_term %}
+        <input type="text" name="search_term" value="{{ search_term }}" />
       {% else %}
-        <input type="text" name="hakusana" />
+        <input type="text" name="search_term" />
       {% endif %}
       <input type="submit" value="Hae" />
     </p>
   </form>
-  {% if hakusana %}
+  {% if search_term %}
     <hr />
     <h2> Tulokset </h2>
-    {% for tulos in tulokset %}
+    {% for r in results %}
       <p>
-        Nimi: <i>{{ tulos["name"] }}</i>. 
-        Tekijä: <i>{{tulos["user_name"]}}</i>.
+        Nimi: <i>{{ r["name"] }}</i>. 
+        Tekijä: <i>{{r["user_name"]}}</i>.
       </p>
     {% endfor %}
   {% endif %}

@@ -9,7 +9,7 @@ def create_user(new_username, new_password):
 def check_password(given_username, given_password):
     sql = "SELECT password_hash, id FROM Users WHERE name = ?"
     query_result = database.query(sql, [given_username])
-    if len(result) == 1:
+    if len(query_result) == 1:
         correct_hash = query_result[0]["password_hash"]
         if check_password_hash(correct_hash, given_password):
             return query_result[0]["id"]
