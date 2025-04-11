@@ -18,19 +18,19 @@
   <h2> Teokset </h2>
   <form action="/luo_teos" method="post">
     Lisää uusi teos: 
-    <input type="text" name="new_work_name_input" maxlength="50"/>
+    <input type="text" name="work_title_input" maxlength="50"/>
     <input type="submit" value="Lisää" />
   </form>
   <hr />
   {% for w in works %}
     <div>
-      <h3>{{ w["name"] }}</h3>
+      <h3>{{ w["title"] }}</h3>
       ID: {{w["id"] }}
       Tekijä: <i>{{w["user_name"]}}</i>
       <p> 
         Sisältyy kokoelmiin: 
         {% for c in collections[w["id"]] %}
-          {{ c["name"] }}
+          {{ c["title"] }}
         {% endfor %}
       </p>
       {% if session.user_id == w["user_id"] %}
@@ -43,7 +43,7 @@
       {% endif %}
       <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
         Liitä kokoelmaan:
-        <input type="text" name="collection_name_input" maxlength="50"/>
+        <input type="text" name="collection_title_input" maxlength="50"/>
         <input type="submit" value="Liitä" />
       </form>
     </div>

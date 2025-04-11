@@ -17,7 +17,7 @@ def check_password(given_username, given_password):
 
 def get_all_works():
     sql = """SELECT 
-        W.id, W.name, W.user_id, U.name AS user_name
+        W.id, W.title, W.user_id, U.name AS user_name
     FROM 
         Works W, Users U
     WHERE
@@ -27,7 +27,7 @@ def get_all_works():
 
 def get_work(work_id):
     sql = """SELECT 
-        W.id, W.name, W.user_id, U.name AS user_name
+        W.id, W.title, W.user_id, U.name AS user_name
     FROM 
         Works W, Users U
     WHERE
@@ -35,38 +35,38 @@ def get_work(work_id):
         """
     return database.query(sql, [work_id])[0]
 
-def create_work(new_work_name, creator_user_id):
-    sql = "INSERT INTO Works (name, user_id) VALUES (?, ?)"
-    database.execute(sql, [new_work_name, creator_user_id])
+def create_work(new_work_title, creator_user_id):
+    sql = "INSERT INTO Works (title, user_id) VALUES (?, ?)"
+    database.execute(sql, [new_work_title, creator_user_id])
 
 def delete_work(work_id):
     sql = "DELETE FROM Works WHERE id = ?"
     database.execute(sql, [work_id])
 
 def edit_work(work_id, column_name, new_value):
-    if column_name == "name":
-        sql = "UPDATE Works SET name = ? WHERE id = ?"
+    if column_name == "title":
+        sql = "UPDATE Works SET title = ? WHERE id = ?"
         database.execute(sql, [new_value, work_id])
 
 def search(search_term):
     sql = """SELECT 
-    		W.id, W.name, W.user_id, U.name AS user_name 	
+    		W.id, W.title, W.user_id, U.name AS user_name 	
 	FROM 
 		Works W, Users U 
     WHERE 
-    		W.name LIKE ? OR user_name LIKE ?"""
+    		W.title LIKE ? OR user_name LIKE ?"""
     return database.query(sql, ["%" +search_term +"%", "%" +search_term +"%"])
 
-def create_collection(new_collection_name, creator_user_id):
-    sql = "INSERT INTO Collections (user_id, name) VALUES (?, ?)"
-    database.execute(sql, [creator_user_id, new_collection_name])
+def create_collection(new_collection_title, creator_user_id):
+    sql = "INSERT INTO Collections (user_id, title) VALUES (?, ?)"
+    database.execute(sql, [creator_user_id, new_collection_title])
 
-def add_work_to_collection(work_id, collection_name, adder_user_id):
-    sql1 = "SELECT id FROM Collections WHERE name = ?"
-    query_result_1 = database.query(sql1, [collection_name])
+def add_work_to_collection(work_id, collection_title, adder_user_id):
+    sql1 = "SELECT id FROM Collections WHERE title = ?"
+    query_result_1 = database.query(sql1, [collection_title])
     if len(query_result_1) == 0:
-        create_collection(collection_name, adder_user_id)
-        query_result_1 = database.query(sql1, [collection_name])
+        create_collection(collection_title, adder_user_id)
+        query_result_1 = database.query(sql1, [collection_title])
     new_collection_id = query_result_1[0][0]
     sql2 = """INSERT INTO WorksInCollection (work_id, collection_id)
     VALUES (?, ?)"""
@@ -75,7 +75,7 @@ def add_work_to_collection(work_id, collection_name, adder_user_id):
 
 def get_collections_that_include(work_id):
     sql = """SELECT
-        C.name, C.user_id, U.name AS user_name
+        C.title, C.user_id, U.name AS user_name
     FROM
         Collections C, Works W, WorksInCollection WC, Users U
     WHERE
@@ -85,7 +85,7 @@ def get_collections_that_include(work_id):
 
 def get_all_collections():
     sql = """SELECT 
-        C.id, C.name, C.user_id, U.name AS user_name
+        C.id, C.title, C.user_id, U.name AS user_name
     FROM 
         Collections C, Users U
     WHERE
@@ -95,7 +95,7 @@ def get_all_collections():
     
 def get_works_included_in(collection_id):
     sql = """SELECT 
-        W.name, W.user_id
+        W.title, W.user_id
     FROM
         Works W, Collections C, WorksInCollection WC
     WHERE

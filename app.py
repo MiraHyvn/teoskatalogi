@@ -50,11 +50,11 @@ def logout():
 @app.route("/luo_teos", methods=["POST"])
 def create_work():
     require_login()
-    work_name_input = request.form["new_work_name_input"]
-    if len(work_name_input) == 0 or len(work_name_input) > 50:    
+    work_title_input = request.form["work_title_input"]
+    if len(work_title_input) == 0 or len(work_title_input) > 50:    
         abort(403)
     user_id = session["user_id"]
-    catalogue.create_work(work_name_input, user_id)
+    catalogue.create_work(work_title_input, user_id)
     return redirect("/")
 
 @app.route("/poista_teos/<int:work_id>", methods=["POST"])
@@ -76,8 +76,8 @@ def muokkaa_teosta(work_id):
     if request.method == "GET":
         return render_template("edit_work.html", work = work)
     if request.method == "POST":
-        updated_name = request.form["name_input"]
-        catalogue.edit_work(work_id, "name", updated_name)
+        updated_title = request.form["title_input"]
+        catalogue.edit_work(work_id, "title", updated_title)
     return redirect("/")
 
 @app.route("/haku")
@@ -92,8 +92,8 @@ def search():
 @app.route("/liita_kokoelmaan/<int:work_id>", methods=["POST"])
 def add_to_collection(work_id):
     require_login()
-    collection_name = request.form["collection_name_input"]
-    catalogue.add_work_to_collection(work_id, collection_name, session["user_id"])
+    collection_title = request.form["collection_title_input"]
+    catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     return redirect("/")
 
 @app.route("/kokoelmat")

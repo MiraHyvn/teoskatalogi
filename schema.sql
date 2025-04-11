@@ -6,13 +6,13 @@ CREATE TABLE Users (
 
 CREATE TABLE Works (
 	id INTEGER PRIMARY KEY,
-	name TEXT,
+	title TEXT,
     	user_id INTEGER REFERENCES Users
 );
 
 CREATE TABLE Collections (
 	id INTEGER PRIMARY KEY,
-	name TEXT,
+	title TEXT,
 	user_id INTEGER REFERENCES Users
 );
 
