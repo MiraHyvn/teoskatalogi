@@ -2,7 +2,7 @@ import database
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def create_user(new_username, new_password):
-    new_hash = generate_password_hash(password)
+    new_hash = generate_password_hash(new_password)
     sql = "INSERT INTO Users (name, password_hash) VALUES (?, ?)"
     database.execute(sql, [new_username, new_hash])
 

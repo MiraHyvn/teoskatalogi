@@ -9,101 +9,101 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    teokset = catalogue.get_all_works()
-    kokoelmat = {}
-    for t in teokset:
-        kokoelmat[t["id"]] = catalogue.get_collections_that_include(t["id"])
-    return render_template("index.html", works=teokset, collections=kokoelmat)
+    all_works = catalogue.get_all_works()
+    collections = {}
+    for w in all_works:
+        collections[w["id"]] = catalogue.get_collections_that_include(w["id"])
+    return render_template("index.html", works=all_works, collections=collections)
 
 @app.route("/rekisteroidy")
-def rekisteroidy():
+def register():
     return render_template("register.html")
 
 @app.route("/kirjaudu", methods=["POST"])
-def kirjaudu():
-    annettu_tunnus = request.form["username_input"]
-    annettu_salasana = request.form["password_input"]
-    kayttaja_id = catalogue.check_password(annettu_tunnus, annettu_salasana)
-    if kayttaja_id:
-        session["user_id"] = kayttaja_id
+def login():
+    username_input = request.form["username_input"]
+    password_input = request.form["password_input"]
+    valid_user_id = catalogue.check_password(username_input, password_input)
+    if valid_user_id:
+        session["user_id"] = valid_user_id
         return redirect("/")
     else:
         return "Virhe: Väärä tunnus tai salasana."
     
 @app.route("/luo_kayttaja", methods=["POST"])
-def luo_kayttaja():
-    uusi_tunnus = request.form["username_input"]
-    uusi_salasana = request.form["password_input"]
-    if len(uusi_tunnus) > 50 or len(uusi_tunnus) == 0 or len(uusi_salasana) > 50:
+def create_user():
+    username_input = request.form["username_input"]
+    password_input = request.form["password_input"]
+    if len(username_input) > 50 or len(username_input) == 0 or len(password_input) > 50:
         abort(403)
     try:
-        catalogue.create_user(uusi_tunnus, uusi_salasana)
+        catalogue.create_user(username_input, password_input)
     except sqlite3.IntegrityError:
         return "Virhe: Käyttäjää ei voitu luoda."
     return redirect("/")
 
 @app.route("/kirjaudu_ulos")
-def kirjaudu_ulos():
+def logout():
     del session["user_id"]
     return redirect("/")
     
 @app.route("/luo_teos", methods=["POST"])
-def luo_teos():
-    vaadi_kirjautuminen()
-    annettu_teoksen_nimi = request.form["new_work_name_input"]
-    if len(annettu_teoksen_nimi) == 0 or len(annettu_teoksen_nimi) > 50:    
+def create_work():
+    require_login()
+    work_name_input = request.form["new_work_name_input"]
+    if len(work_name_input) == 0 or len(work_name_input) > 50:    
         abort(403)
-    kayttaja_id = session["user_id"]
-    catalogue.create_work(annettu_teoksen_nimi, kayttaja_id)
+    user_id = session["user_id"]
+    catalogue.create_work(work_name_input, user_id)
     return redirect("/")
 
-@app.route("/poista_teos/<int:teos_id>", methods=["POST"])
-def poista_teos(teos_id):
-    vaadi_kirjautuminen()
-    teos = catalogue.get_work(teos_id)
-    if session["user_id"] == teos["user_id"]:
-        catalogue.delete_work(teos_id)
+@app.route("/poista_teos/<int:work_id>", methods=["POST"])
+def delete_work(work_id):
+    require_login()
+    work = catalogue.get_work(work_id)
+    if session["user_id"] == work["user_id"]:
+        catalogue.delete_work(work_id)
     else:
         abort(403)
     return redirect("/")
 
-@app.route("/muokkaa_teosta/<int:teos_id>", methods=["GET", "POST"])
-def muokkaa_teosta(teos_id):
-    vaadi_kirjautuminen()
-    teos = catalogue.get_work(teos_id)
-    if session["user_id"] != teos["user_id"]:
+@app.route("/muokkaa_teosta/<int:work_id>", methods=["GET", "POST"])
+def muokkaa_teosta(work_id):
+    require_login()
+    work = catalogue.get_work(work_id)
+    if session["user_id"] != work["user_id"]:
         abort(403)
     if request.method == "GET":
-        return render_template("edit_work.html", work = teos)
+        return render_template("edit_work.html", work = work)
     if request.method == "POST":
-        uusi_nimi = request.form["name_input"]
-        catalogue.edit_work(teos_id, "name", uusi_nimi)
+        updated_name = request.form["name_input"]
+        catalogue.edit_work(work_id, "name", updated_name)
     return redirect("/")
 
 @app.route("/haku")
-def haku():
-    hakusana_arg = request.args.get("search_term")
-    if hakusana_arg:
-        tulokset = catalogue.search(hakusana_arg) 
+def search():
+    search_term_arg = request.args.get("search_term")
+    if search_term_arg:
+        results = catalogue.search(search_term_arg) 
     else:
-        tulokset = []
-    return render_template("search.html",search_term=hakusana_arg, results=tulokset)
+        results = []
+    return render_template("search.html",search_term=search_term_arg, results=results)
 
-@app.route("/liita_kokoelmaan/<int:teos_id>", methods=["POST"])
-def liita_kokoelmaan(teos_id):
-    vaadi_kirjautuminen()
-    kokoelman_nimi = request.form["collection_name_input"]
-    catalogue.add_work_to_collection(teos_id, kokoelman_nimi, session["user_id"])
+@app.route("/liita_kokoelmaan/<int:work_id>", methods=["POST"])
+def add_to_collection(work_id):
+    require_login()
+    collection_name = request.form["collection_name_input"]
+    catalogue.add_work_to_collection(work_id, collection_name, session["user_id"])
     return redirect("/")
 
 @app.route("/kokoelmat")
-def kokoelmat():
-    kokoelmat = catalogue.get_all_collections()
-    teokset = {}
-    for k in kokoelmat:
-        teokset[k["id"]] = catalogue.get_works_included_in(k["id"])
-    return render_template("collections.html", collections=kokoelmat, works=teokset)
+def collections():
+    all_collections = catalogue.get_all_collections()
+    works = {}
+    for c in all_collections:
+        works[c["id"]] = catalogue.get_works_included_in(c["id"])
+    return render_template("collections.html", collections=all_collections, works=works)
     
-def vaadi_kirjautuminen():
+def require_login():
     if "user_id" not in session:
         abort(403)
