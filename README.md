@@ -41,3 +41,6 @@ Kokoelmaan pitäisi voida liittää teoksia vain sen tekijän.
 Jos teoksia poistetaan ja lisätään, kokoelmien viitteet eivät pysy oikeina. 
 (Esimerkiksi jos teos #4 on liitetty kokoelmaan #1, ja teos #4 poistetaan, ja 
 luodaan uusi teos joka saa indeksikseen 4, uusi teos sisältyy kokoelmaan #1.) 
+
+/muokkaa_teosta/1 tuottaa IndexError: list index out of range, kun teosta #1
+ei ole. Pitäisi tuottaa 404.
