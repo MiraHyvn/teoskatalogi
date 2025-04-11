@@ -2,7 +2,7 @@ import sqlite3
 from flask import g
 
 def luo_yhteys():
-    yhteys = sqlite3.connect("tietokanta.db")
+    yhteys = sqlite3.connect("database.db")
     yhteys.row_factory = sqlite3.Row
     return yhteys
 
