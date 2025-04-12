@@ -9,7 +9,7 @@
     <h2> {{c["title"]}} </h2>
     <p> Tekijä: {{c["user_name"] }} </p>
     <p>
-    Teokset: 
+    Teokset:
     {% for w in works[c["id"]] %}
       {{w["title"]}}, 
     {% endfor %}

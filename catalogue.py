@@ -29,7 +29,7 @@ def get_all_works():
     FROM 
         Works W, Users U
     WHERE
-        W.user_id = U.id
+        W.user_id = U.id AND W.deleted = 0
         """    
     return database.query(sql)
 
@@ -39,7 +39,7 @@ def get_work(work_id):
     FROM 
         Works W, Users U
     WHERE
-        W.user_id = U.id AND W.id = ?
+        W.user_id = U.id AND W.id = ? AND W.deleted = 0
         """
     return database.query(sql, [work_id])[0]
 
@@ -49,7 +49,7 @@ def get_works_by_user(user_id):
 	FROM
 		Works W, Users U
 	WHERE
-		W.user_id = ? AND W.user_id = U.id"""
+		W.user_id = ? AND W.user_id = U.id AND W.deleted = 0"""
 	return database.query(sql, [user_id])
 
 def create_work(new_work_title, classes, creator_user_id):
@@ -65,7 +65,7 @@ def create_work(new_work_title, classes, creator_user_id):
                 
 
 def delete_work(work_id):
-    sql = "DELETE FROM Works WHERE id = ?"
+    sql = "UPDATE Works SET deleted = 1 WHERE id = ?"
     database.execute(sql, [work_id])
 
 def edit_work(work_id, column_name, new_value):
@@ -76,7 +76,7 @@ def edit_work(work_id, column_name, new_value):
 def search(search_term):
     sql = """SELECT W.id, W.title, W.user_id, U.name AS user_name 	
 	    FROM Works W, Users U 
-        WHERE W.title LIKE ? AND U.id = W.user_id"""
+        WHERE W.title LIKE ? AND U.id = W.user_id AND W.deleted = 0"""
     return database.query(sql, ["%" +search_term +"%"])
 
 def create_collection(new_collection_title, creator_user_id):
@@ -102,7 +102,7 @@ def get_collections_that_include(work_id):
         Collections C, Works W, WorksInCollection WC, Users U
     WHERE
         C.id = WC.collection_id AND W.id = WC.work_id AND W.id = ?
-        AND U.id = C.user_id""" 
+        AND U.id = C.user_id AND W.deleted = 0""" 
     return database.query(sql, [work_id])
 
 def get_all_collections():
@@ -116,14 +116,6 @@ def get_all_collections():
     return database.query(sql)
     
 def get_collections_by_user(user_id):
-# SELECT C.id, C.title, C.user_id, U.name AS user_name, W.title, count(W.id)
-# FROM
-#   Collections C, Users U, WorksInCollection WC, Works W   
-# WHERE
-#   C.user_id = U.id AND C.user_id = 1 
-#   AND WC.collection_id = C.id 
-#   AND WC.work_id = W.id GROUP BY C.id;
-
 	sql = """SELECT 
 	        C.id, C.title, C.user_id, U.name AS user_name,
 	        count(W.id) AS work_count
@@ -134,6 +126,7 @@ def get_collections_by_user(user_id):
             AND C.user_id = ?
             AND WC.collection_id = C.id 
             AND WC.work_id = W.id 
+            AND W.deleted = 0
         GROUP BY C.id;
 	"""
 	return database.query(sql, [user_id])
@@ -144,23 +137,30 @@ def get_works_included_in(collection_id):
     FROM
         Works W, Collections C, WorksInCollection WC
     WHERE
-        W.id = WC.work_id AND C.id = WC.collection_id AND C.id = ?"""
+        W.id = WC.work_id 
+        AND C.id = WC.collection_id 
+        AND C.id = ? 
+        AND W.deleted = 0"""
     return database.query(sql, [collection_id])
 
 def get_user_stats(user_id, collections_by_user):
 	# How many works and collections added by user
 	# How many times a work by user is added to a collection
 	# Average number of works in collections created by user
-	sql1 = """SELECT COUNT(id) FROM Works WHERE user_id = ?"""
+	sql1 = """SELECT COUNT(W.id) 
+	    FROM Works W 
+	    WHERE user_id = ? AND W.deleted = 0"""
 	work_count = database.query(sql1, [user_id])[0][0]
-	sql2 = """SELECT COUNT(id) FROM Collections WHERE user_id = ?"""
+	sql2 = """SELECT COUNT(id) 
+	    FROM Collections 
+	    WHERE user_id = ?"""
 	collection_count = database.query(sql2, [user_id])[0][0]
 	sql3 = """SELECT
 		COUNT(WC.id)
 	FROM 
 		WorksInCollection WC, Works W 
 	WHERE
-		W.user_id = ? AND WC.work_id = W.id
+		W.user_id = ? AND WC.work_id = W.id AND W.deleted = 0
 	"""
 	pick_count = database.query(sql3, [user_id])[0][0]
 	sum_works_in_collections = 0
