@@ -20,6 +20,7 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
+* Rekisteröityminen tuottaa internal server errorin
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.

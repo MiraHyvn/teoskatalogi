@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teoskatalogi</title>
+</head>
+<body>
+    <!-- Ylävalikko -->
+    <h1> <a href = "/"> Teoskatalogi </a> </h1>
+    <ul>
+        {% if session.user_id %}
+            <li> 
+                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+            </li>
+        {% endif %}
+        <li><a href="/haku"> Haku </a></li>
+        <li><a href="/kokoelmat"> Kokoelmat </a></li>
+        {% if session.user_id %}
+            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        {% else %}
+            <li><a href="/kirjaudu" method="post"> Kirjaudu sisään </a></li>
+        {% endif %}
+    </ul>
+    <hr />
+    
+    <!-- Kirjaudu sisään -->    
+    <h2> Kirjaudu sisään </h2>
+    <form action="/kirjaudu" method="post">
+        <p>
+            Tunnus: <br />
+            <input type="text" name="username_input" />
+        </p>
+        <p>
+            Salasana: <br />
+            <input type="password" name="password_input" />
+        </p>
+        <input type="submit" value="Kirjaudu" />
+    </form>
+    <p> <a href="/rekisteroidy"> Rekisteröidy </a> </p>
+</body>
+</html>
