@@ -74,13 +74,10 @@ def edit_work(work_id, column_name, new_value):
         database.execute(sql, [new_value, work_id])
 
 def search(search_term):
-    sql = """SELECT 
-    		W.id, W.title, W.user_id, U.name AS user_name 	
-	FROM 
-		Works W, Users U 
-    WHERE 
-    		W.title LIKE ? OR user_name LIKE ?"""
-    return database.query(sql, ["%" +search_term +"%", "%" +search_term +"%"])
+    sql = """SELECT W.id, W.title, W.user_id, U.name AS user_name 	
+	    FROM Works W, Users U 
+        WHERE W.title LIKE ? AND U.id = W.user_id"""
+    return database.query(sql, ["%" +search_term +"%"])
 
 def create_collection(new_collection_title, creator_user_id):
     sql = "INSERT INTO Collections (user_id, title) VALUES (?, ?)"

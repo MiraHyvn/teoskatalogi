@@ -31,8 +31,6 @@ ei ole. Pitäisi tuottaa 404.
 * Jos mennään käyttäjäsivulle suoran URL-osoitteen kautta, esimerkiksi 
 /kayttaja/1, ja ollaan kirjautuneena sisään eri käyttäjänä, sivu näkyy väärin.
 Pitäisi estää pääsy toisten käyttäjien käyttäjäsivuille.
-* Haku antaa vääriä tuloksia. Sama teos tulee monta kertaa ja tekijän nimi on
-väärä.
 * Käyttäjäsivulla näkyy väärin kokoelmien teosmäärät.
 
 ## Suunniteltuja ominaisuuksia
