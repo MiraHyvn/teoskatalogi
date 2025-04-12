@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import redirect, render_template, request, session, abort
-import sqlite3
+import sqlite3, secrets
 import catalogue
 import config
 
@@ -30,6 +30,7 @@ def login():
     if valid_user_id:
         session["user_id"] = valid_user_id
         session["user_name"] = catalogue.get_user_name(valid_user_id)
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
         return "Virhe: Väärä tunnus tai salasana."
@@ -55,6 +56,7 @@ def logout():
 @app.route("/luo_teos", methods=["POST"])
 def create_work():
     require_login()
+    check_csrf()
     work_title_input = request.form["work_title_input"]
     medium_input = request.form["medium_input"]
     if len(work_title_input) == 0 or len(work_title_input) > 50:    
@@ -121,3 +123,9 @@ def user(user_id):
 	c = catalogue.get_collections_by_user(user_id)
 	s = catalogue.get_user_stats(user_id, c)
 	return render_template("user.html", works = w, collections = c, stats = s)
+
+def check_csrf():
+    if "csrf_token" not in session:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
