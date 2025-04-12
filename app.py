@@ -122,10 +122,13 @@ def require_login():
     
 @app.route("/kayttaja/<int:user_id>")
 def user(user_id):
-	w = catalogue.get_works_by_user(user_id)
-	c = catalogue.get_collections_by_user(user_id)
-	s = catalogue.get_user_stats(user_id, c)
-	return render_template("user.html", works = w, collections = c, stats = s)
+    require_login() 
+    if user_id != session["user_id"]:
+        abort(403)
+    w = catalogue.get_works_by_user(user_id)
+    c = catalogue.get_collections_by_user(user_id)
+    s = catalogue.get_user_stats(user_id, c)
+    return render_template("user.html", works = w, collections = c, stats = s)
 
 def check_csrf():
     if "csrf_token" not in session:

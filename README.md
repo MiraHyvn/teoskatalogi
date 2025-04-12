@@ -28,9 +28,6 @@ nimi katkeaa välilyönnin kohdalta.
 luodaan uusi teos joka saa indeksikseen 4, uusi teos sisältyy kokoelmaan #1.) 
 * /muokkaa_teosta/1 tuottaa IndexError: list index out of range, kun teosta #1
 ei ole. Pitäisi tuottaa 404.
-* Jos mennään käyttäjäsivulle suoran URL-osoitteen kautta, esimerkiksi 
-/kayttaja/1, ja ollaan kirjautuneena sisään eri käyttäjänä, sivu näkyy väärin.
-Pitäisi estää pääsy toisten käyttäjien käyttäjäsivuille.
 
 ## Suunniteltuja ominaisuuksia
 * CSS ja ulkoasun kehittäminen
