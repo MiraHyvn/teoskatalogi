@@ -69,6 +69,7 @@ def create_work():
 @app.route("/poista_teos/<int:work_id>", methods=["POST"])
 def delete_work(work_id):
     require_login()
+    check_csrf()
     work = catalogue.get_work(work_id)
     if session["user_id"] == work["user_id"]:
         catalogue.delete_work(work_id)
@@ -85,6 +86,7 @@ def muokkaa_teosta(work_id):
     if request.method == "GET":
         return render_template("edit_work.html", work = work)
     if request.method == "POST":
+        check_csrf()    
         updated_title = request.form["title_input"]
         catalogue.edit_work(work_id, "title", updated_title)
     return redirect("/")
@@ -101,6 +103,7 @@ def search():
 @app.route("/liita_kokoelmaan/<int:work_id>", methods=["POST"])
 def add_to_collection(work_id):
     require_login()
+    check_csrf()    
     collection_title = request.form["collection_title_input"]
     catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     return redirect("/")

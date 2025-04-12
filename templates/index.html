@@ -50,13 +50,16 @@
       </p>
       {% if session.user_id == w["user_id"] %}
         <form action="/poista_teos/{{w["id"]}}" method="post" style="display:inline"> 
+          <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
           <input type="submit" value="Poista" />
         </form>
         <form action="/muokkaa_teosta/{{w["id"]}}" method="get" style="display:inline"> 
+          <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
           <input type="submit" value="Muokkaa" />
         </form>
       {% endif %}
       <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
+        <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
         Liitä kokoelmaan:
         <input type="text" name="collection_title_input" maxlength="50"/>
         <input type="submit" value="Liitä" />
