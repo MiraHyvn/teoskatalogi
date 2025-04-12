@@ -23,8 +23,6 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
-* /muokkaa_teosta/1 tuottaa IndexError: list index out of range, kun teosta #1
-ei ole. Pitäisi tuottaa 404.
 
 ## Suunniteltuja ominaisuuksia
 * CSS ja ulkoasun kehittäminen
