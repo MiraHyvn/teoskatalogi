@@ -9,11 +9,14 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    all_works = catalogue.get_all_works()
+    works = catalogue.get_all_works()
+    all_classes = catalogue.get_all_classes()
     collections = {}
-    for w in all_works:
+    work_classes = {}
+    for w in works:
+        work_classes[w["id"]] = catalogue.get_classes(w["id"]) 
         collections[w["id"]] = catalogue.get_collections_that_include(w["id"])
-    return render_template("index.html", works=all_works, collections=collections)
+    return render_template("index.html", works=works, all_classes = all_classes, work_classes = work_classes, collections=collections)
 
 @app.route("/rekisteroidy")
 def register():
@@ -53,10 +56,12 @@ def logout():
 def create_work():
     require_login()
     work_title_input = request.form["work_title_input"]
+    medium_input = request.form["medium_input"]
     if len(work_title_input) == 0 or len(work_title_input) > 50:    
         abort(403)
     user_id = session["user_id"]
-    catalogue.create_work(work_title_input, user_id)
+    classes = {"tekniikka": medium_input}
+    catalogue.create_work(work_title_input, classes, user_id)
     return redirect("/")
 
 @app.route("/poista_teos/<int:work_id>", methods=["POST"])

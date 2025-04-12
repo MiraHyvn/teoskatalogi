@@ -23,13 +23,24 @@
     Lisää uusi teos: 
     <input type="text" name="work_title_input" maxlength="50"/>
     <input type="submit" value="Lisää" />
+    Tekniikka: <select name="medium_input">
+    	    <option value="other"> (valitse) </option>
+    	    {% for cl in all_classes["tekniikka"] %}
+    	        <option value="{{cl}}"> {{cl}} </option>
+    	    {% endfor %}
+    </select>
   </form>
   <hr />
   {% for w in works %}
     <div>
       <h3>{{ w["title"] }}</h3>
-      ID: {{w["id"] }}
-      Tekijä: <i>{{w["user_name"]}}</i>
+      <p style="text-transform: capitalize">
+      ID: {{w["id"] }}.
+      Tekijä: {{w["user_name"]}}.
+        {% for c in work_classes[w["id"]] %}
+          {{ c["title"] }}: {{c["value"] }}.
+        {% endfor %}
+      </p>
       <p> 
         Sisältyy kokoelmiin: 
         {% for c in collections[w["id"]] %}

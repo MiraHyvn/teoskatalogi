@@ -1,10 +1,10 @@
-INSERT INTO Classes (title, value) VALUES ("medium", "painting");
-INSERT INTO Classes (title, value) VALUES ("medium", "sculpture");
-INSERT INTO Classes (title, value) VALUES ("medium", "video");
-INSERT INTO Classes (title, value) VALUES ("medium", "performance");
-INSERT INTO Classes (title, value) VALUES ("medium", "installation");
-INSERT INTO Classes (title, value) VALUES ("medium", "drawing");
-INSERT INTO Classes (title, value) VALUES ("medium", "print");
-INSERT INTO Classes (title, value) VALUES ("medium", "digital");
-INSERT INTO Classes (title, value) VALUES ("medium", "other");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "maalaus");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "veistos");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "video");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "esitys");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "installaatio");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "piirustus");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "vedos");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "digitaalinen");
+INSERT INTO Classes (title, value) VALUES ("tekniikka", "muu");
 

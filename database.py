@@ -10,6 +10,7 @@ def execute(sql, parameters=[]):
     connection = connect()
     result = connection.execute(sql, parameters)
     connection.commit()
+    g.last_insert_id = result.lastrowid
     connection.close()
 
 def query(sql, parameters=[]):
@@ -18,3 +19,5 @@ def query(sql, parameters=[]):
     connection.close()
     return result
 
+def get_last_insert_id():
+    return g.last_insert_id

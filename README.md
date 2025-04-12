@@ -17,13 +17,7 @@ teoksia.
 tiedoissa näkyy kaikki kokoelmat joihin se kuuluu.
 * Katalogissa on käyttäjäsivut, jotka näyttävät jokaisesta käyttäjästä 
 tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
-
-## Suunnitellut ominaisuudet
-* Käyttäjä pystyy valitsemaan teokselle yhden tai useamman luokittelun, kuten 
-missä näyttelyssä teos on esitetty; teoksen tyyppi kuten taulu, veistos tai 
-video; tai kokoluokitus kuten pieni, keskikokoinen tai suuri. Mahdolliset 
-luokat ovat tietokannassa.
-
+* Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
 Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
@@ -45,3 +39,4 @@ Pitäisi estää pääsy toisten käyttäjien käyttäjäsivuille.
 Haku antaa vääriä tuloksia. Sama teos tulee monta kertaa ja tekijän nimi on
 väärä.
 
+Käyttäjäsivulla näkyy väärin kokoelmien teosmäärät.

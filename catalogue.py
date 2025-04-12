@@ -52,9 +52,17 @@ def get_works_by_user(user_id):
 		W.user_id = ? AND W.user_id = U.id"""
 	return database.query(sql, [user_id])
 
-def create_work(new_work_title, creator_user_id):
-    sql = "INSERT INTO Works (title, user_id) VALUES (?, ?)"
-    database.execute(sql, [new_work_title, creator_user_id])
+def create_work(new_work_title, classes, creator_user_id):
+    sql1 = "INSERT INTO Works (title, user_id) VALUES (?, ?)"
+    database.execute(sql1, [new_work_title, creator_user_id])
+    new_work_id = database.get_last_insert_id()
+    for c in classes:
+        sql2 = """INSERT INTO WorkClasses (work_id, class_id)
+            SELECT W.id, C.id
+            FROM Classes C, Works W
+            WHERE W.id = ? AND C.title = ? AND C.value = ?"""
+        database.execute(sql2, [new_work_id, c, classes[c]])
+                
 
 def delete_work(work_id):
     sql = "DELETE FROM Works WHERE id = ?"
@@ -156,4 +164,22 @@ def get_user_stats(user_id, collections_by_user):
 	result["picks"] = pick_count
 	result["avg_collection_size"] = avg_works_in_collections
 	return result
-		
+
+def get_all_classes():
+	sql = "SELECT title, value FROM Classes"
+	query_result = database.query(sql)
+	classes = {}
+	for title, value in query_result:
+		classes[title] = []
+	for title, value in query_result:
+		classes[title].append(value)
+	return classes
+
+def get_classes(work_id):
+	sql = """SELECT
+		C.title, C.value
+	FROM
+		Classes C, WorkClasses WC
+	WHERE
+		WC.work_id = ? AND C.id = WC.class_id"""
+	return database.query(sql, [work_id])
