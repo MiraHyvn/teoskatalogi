@@ -41,7 +41,11 @@ def get_work(work_id):
     WHERE
         W.user_id = U.id AND W.id = ? AND W.deleted = 0
         """
-    return database.query(sql, [work_id])[0]
+    query_result = database.query(sql, [work_id])
+    if not query_result:
+        return None
+    else:
+        return query_result[0]
 
 def get_works_by_user(user_id):
 	sql = """SELECT DISTINCT

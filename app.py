@@ -81,6 +81,8 @@ def delete_work(work_id):
 def muokkaa_teosta(work_id):
     require_login()
     work = catalogue.get_work(work_id)
+    if not work:
+        abort(404)
     if session["user_id"] != work["user_id"]:
         abort(403)
     if request.method == "GET":
