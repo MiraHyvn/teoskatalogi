@@ -31,7 +31,6 @@ ei ole. Pitäisi tuottaa 404.
 * Jos mennään käyttäjäsivulle suoran URL-osoitteen kautta, esimerkiksi 
 /kayttaja/1, ja ollaan kirjautuneena sisään eri käyttäjänä, sivu näkyy väärin.
 Pitäisi estää pääsy toisten käyttäjien käyttäjäsivuille.
-* Käyttäjäsivulla näkyy väärin kokoelmien teosmäärät.
 
 ## Suunniteltuja ominaisuuksia
 * CSS ja ulkoasun kehittäminen

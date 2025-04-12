@@ -116,12 +116,25 @@ def get_all_collections():
     return database.query(sql)
     
 def get_collections_by_user(user_id):
-	sql = """SELECT
-		C.id, C.title, C.user_id, U.name AS user_name
-	FROM
-		Collections C, Users U
-	WHERE
-		C.user_id = U.id AND C.user_id = ?
+# SELECT C.id, C.title, C.user_id, U.name AS user_name, W.title, count(W.id)
+# FROM
+#   Collections C, Users U, WorksInCollection WC, Works W   
+# WHERE
+#   C.user_id = U.id AND C.user_id = 1 
+#   AND WC.collection_id = C.id 
+#   AND WC.work_id = W.id GROUP BY C.id;
+
+	sql = """SELECT 
+	        C.id, C.title, C.user_id, U.name AS user_name,
+	        count(W.id) AS work_count
+        FROM
+            Collections C, Users U, WorksInCollection WC, Works W
+        WHERE
+            C.user_id = U.id 
+            AND C.user_id = ?
+            AND WC.collection_id = C.id 
+            AND WC.work_id = W.id 
+        GROUP BY C.id;
 	"""
 	return database.query(sql, [user_id])
 

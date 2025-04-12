@@ -18,7 +18,7 @@
 	<h2> Kokoelmat </h2>
 	<ul>
 	{% for c in collections %}
-      <li>{{ c["title"] }}. {{c|length}} </li>
+      <li>{{ c["title"] }}, {{c["work_count"]}} teosta</li>
 	{% endfor %}
 	</ul>
 </body>
