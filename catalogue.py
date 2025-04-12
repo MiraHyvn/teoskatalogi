@@ -129,9 +129,10 @@ def get_works_included_in(collection_id):
         W.id = WC.work_id AND C.id = WC.collection_id AND C.id = ?"""
     return database.query(sql, [collection_id])
 
-def get_user_stats(user_id):
+def get_user_stats(user_id, collections_by_user):
 	# How many works and collections added by user
 	# How many times a work by user is added to a collection
+	# Average number of works in collections created by user
 	sql1 = """SELECT COUNT(id) FROM Works WHERE user_id = ?"""
 	work_count = database.query(sql1, [user_id])[0][0]
 	sql2 = """SELECT COUNT(id) FROM Collections WHERE user_id = ?"""
@@ -144,9 +145,15 @@ def get_user_stats(user_id):
 		W.user_id = ? AND WC.work_id = W.id
 	"""
 	pick_count = database.query(sql3, [user_id])[0][0]
+	sum_works_in_collections = 0
+	for c in collections_by_user:
+		n = len(get_works_included_in(c["id"]))
+		sum_works_in_collections += n
+	avg_works_in_collections = sum_works_in_collections / len(collections_by_user)
 	result = {}
 	result["works"] = work_count
 	result["collections"] = collection_count
 	result["picks"] = pick_count
+	result["avg_collection_size"] = avg_works_in_collections
 	return result
 		
