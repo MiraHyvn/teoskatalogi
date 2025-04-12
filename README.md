@@ -46,3 +46,6 @@ luodaan uusi teos joka saa indeksikseen 4, uusi teos sisältyy kokoelmaan #1.)
 ei ole. Pitäisi tuottaa 404.
 
 Käyttäjäsivulle kirjautumisen tarkistaminen.
+
+Haku antaa vääriä tuloksia. Sama teos tulee monta kertaa ja tekijän nimi on
+väärä.
