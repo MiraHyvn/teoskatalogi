@@ -20,23 +20,23 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
-Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
+* Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
-
-Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
-
-Jos teoksia poistetaan ja lisätään, kokoelmien viitteet eivät pysy oikeina. 
+* Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
+* Jos teoksia poistetaan ja lisätään, kokoelmien viitteet eivät pysy oikeina. 
 (Esimerkiksi jos teos #4 on liitetty kokoelmaan #1, ja teos #4 poistetaan, ja 
 luodaan uusi teos joka saa indeksikseen 4, uusi teos sisältyy kokoelmaan #1.) 
-
-/muokkaa_teosta/1 tuottaa IndexError: list index out of range, kun teosta #1
+* /muokkaa_teosta/1 tuottaa IndexError: list index out of range, kun teosta #1
 ei ole. Pitäisi tuottaa 404.
-
-Jos mennään käyttäjäsivulle suoran URL-osoitteen kautta, esimerkiksi 
+* Jos mennään käyttäjäsivulle suoran URL-osoitteen kautta, esimerkiksi 
 /kayttaja/1, ja ollaan kirjautuneena sisään eri käyttäjänä, sivu näkyy väärin.
 Pitäisi estää pääsy toisten käyttäjien käyttäjäsivuille.
-
-Haku antaa vääriä tuloksia. Sama teos tulee monta kertaa ja tekijän nimi on
+* Haku antaa vääriä tuloksia. Sama teos tulee monta kertaa ja tekijän nimi on
 väärä.
+* Käyttäjäsivulla näkyy väärin kokoelmien teosmäärät.
 
-Käyttäjäsivulla näkyy väärin kokoelmien teosmäärät.
+## Suunniteltuja ominaisuuksia
+* CSS ja ulkoasun kehittäminen
+* Tietokannan laajentaminen
+* Tietoturvan parantaminen
+* Saavutettavuuden parantaminen
