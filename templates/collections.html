@@ -1,11 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Kokoelmat </title>
+  <title>Teoskatalogi</title>
 </head>
 <body>
-  <h1> Kokoelmat </h1>
-  {% for c in collections %}
+    <!-- Ylävalikko -->
+    <h1> <a href = "/"> Teoskatalogi </a> </h1>
+    <ul>
+        {% if session.user_id %}
+            <li>
+                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+            </li>
+        {% endif %}
+        <li><a href="/haku"> Haku </a></li>
+        <li><a href="/kokoelmat"> Kokoelmat </a></li>
+        {% if session.user_id %}
+            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        {% else %}
+            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        {% endif %}
+    </ul>
+    <hr />
+
+    <!-- Kokoelmat -->
+    <h2> Kokoelmat </h2>
+
+    <!-- Luo uusi kokoelma -->
+    {% if session.user_id %}
+        <form action="/luo_kokoelma" method="post">
+            <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+            <ul style="list-style-type: none">
+                <li>Lisää uusi kokoelma:</li>
+                <li>Nimi: <input type="text" name="collection_title_input" maxlength="50"/></li>
+                <li><input type="submit" value="Tallenna" /></li>
+            </ul>
+        </form>
+    {% endif %}
+
+    <!-- Kokoelmaluettelo -->
+    {% for c in collections %}
     <h2> {{c["title"]}} </h2>
     <p> Tekijä: {{c["user_name"] }} </p>
     <p>
@@ -17,3 +50,9 @@
   {% endfor %}
 </body>
 </html>
+
+
+
+
+<!--
+  <h1> Kokoelmat </h1>

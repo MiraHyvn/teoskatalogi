@@ -105,6 +105,17 @@ def search():
         results = []
     return render_template("search.html",search_term=search_term_arg, results=results)
 
+@app.route("/luo_kokoelma", methods=["POST"])
+def create_collection():
+    require_login()
+    check_csrf()
+    collection_title_input = request.form["collection_title_input"]
+    if len(collection_title_input) == 0 or len(collection_title_input) > 50:
+        abort(403)
+    user_id = session["user_id"]
+    catalogue.create_collection(collection_title_input, user_id)
+    return redirect("/kokoelmat")
+
 @app.route("/liita_kokoelmaan/<int:work_id>", methods=["POST"])
 def add_to_collection(work_id):
     require_login()
