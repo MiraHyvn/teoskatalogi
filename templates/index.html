@@ -46,7 +46,6 @@
         
     <!-- Teosluettelo -->    
     {% for w in works %}
-    <div>
         <ul style="list-style-type: none">
             <li style="text-transform: capitalize">
                 <i>{{ w["title"] }}.</i>
@@ -76,18 +75,6 @@
                 {% endif %}
             </li>
         </ul>
-            
-        
-        <!--
-      <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
-        <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-        Liitä kokoelmaan:
-        <input type="text" name="collection_title_input" maxlength="50"/>
-        <input type="submit" value="Liitä" />
-      </form>
-    </div>
-    <hr />
-  -->
     {% endfor %}
 </body>
 </html>

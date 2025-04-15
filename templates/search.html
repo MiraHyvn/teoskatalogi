@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Haku</title>
+    <title>Teoskatalogi</title>
 </head>
 <body>
-  <h1>
-    Haku
-  </h1>
-  <form action="/haku" method="get">
-    <p>
-      Hakusana:
-      {% if search_term %}
-        <input type="text" name="search_term" value="{{ search_term }}" />
-      {% else %}
-        <input type="text" name="search_term" />
-      {% endif %}
-      <input type="submit" value="Hae" />
-    </p>
-  </form>
-  {% if search_term %}
+    <!-- Ylävalikko -->
+    <h1> <a href = "/"> Teoskatalogi </a> </h1>
+    <ul>
+        {% if session.user_id %}
+            <li>
+                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+            </li>
+        {% endif %}
+        <li><a href="/haku"> Haku </a></li>
+        <li><a href="/kokoelmat"> Kokoelmat </a></li>
+        {% if session.user_id %}
+            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        {% else %}
+            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        {% endif %}
+    </ul>
     <hr />
-    <h2> Tulokset </h2>
-    {% for r in results %}
-      <p>
-        Nimi: <i>{{ r["title"] }}</i>. 
-        Tekijä: <i>{{r["user_name"]}}</i>.
-      </p>
+    <h2>Haku</h2>
+    <form action="/haku" method="get">
+        <p>
+            Hakusana:
+            {% if search_term %}
+                <input type="text" name="search_term" value="{{ search_term }}" />
+            {% else %}
+                <input type="text" name="search_term" />
+            {% endif %}
+            <input type="submit" value="Hae" />
+        </p>
+    </form>
+    {% if search_term %}
+        <hr />
+        <h3> Tulokset </h3>
+        {% for r in results %}
+            <ul style="list-style-type: none">
+                <li style="text-transform: capitalize">
+                    <i>{{ r["title"] }}.</i>
+                    {{r["user_name"]}} 2025.
+                </li>
+            </ul>
     {% endfor %}
   {% endif %}
 </body>

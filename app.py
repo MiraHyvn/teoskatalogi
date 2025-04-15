@@ -100,7 +100,7 @@ def muokkaa_teosta(work_id):
 def search():
     search_term_arg = request.args.get("search_term")
     if search_term_arg:
-        results = catalogue.search(search_term_arg) 
+        results = catalogue.search(search_term_arg)
     else:
         results = []
     return render_template("search.html",search_term=search_term_arg, results=results)
