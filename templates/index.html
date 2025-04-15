@@ -17,7 +17,7 @@
         {% if session.user_id %}
             <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
         {% else %}
-            <li><a href="/kirjaudu" method="post"> Kirjaudu sisään </a></li>
+            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
         {% endif %}
     </ul>
     <hr />
@@ -29,15 +29,18 @@
     {% if session.user_id %}
         <form action="/luo_teos" method="post">
             <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-            Lisää uusi teos: 
-            <input type="text" name="work_title_input" maxlength="50"/>
-            Tekniikka: <select name="medium_input">
-        	    <option value="other"> (valitse) </option>
-            	    {% for cl in all_classes["tekniikka"] %}
-            	        <option value="{{cl}}"> {{cl}} </option>
-            	    {% endfor %}
-            <input type="submit" value="Lisää" />
-            </select>
+            <ul style="list-style-type: none">
+                <li>Lisää uusi teos:</li>
+                <li>Nimi: <input type="text" name="work_title_input" maxlength="50"/></li>
+                <li>Vuosi: <input type="text" value="2025"</li>
+                <li>Tekniikka: <select name="medium_input"></li>
+                <option value="other"> (valitse) </option>
+                    {% for cl in all_classes["tekniikka"] %}
+                        <option value="{{cl}}"> {{cl}} </option>
+                    {% endfor %}
+                </select>
+                <li><input type="submit" value="Tallenna" /></li>
+            </ul>
         </form>
     {% endif %}
         

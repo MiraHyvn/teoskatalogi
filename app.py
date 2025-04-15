@@ -22,18 +22,21 @@ def index():
 def register():
     return render_template("register.html")
 
-@app.route("/kirjaudu", methods=["POST"])
+@app.route("/kirjaudu", methods=["GET", "POST"])
 def login():
-    username_input = request.form["username_input"]
-    password_input = request.form["password_input"]
-    valid_user_id = catalogue.check_password(username_input, password_input)
-    if valid_user_id:
-        session["user_id"] = valid_user_id
-        session["user_name"] = catalogue.get_user_name(valid_user_id)
-        session["csrf_token"] = secrets.token_hex(16)
-        return redirect("/")
-    else:
-        return "Virhe: Väärä tunnus tai salasana."
+    if request.method == "GET":
+        return render_template("login.html")
+    if request.method == "POST":
+        username_input = request.form["username_input"]
+        password_input = request.form["password_input"]
+        valid_user_id = catalogue.check_password(username_input, password_input)
+        if valid_user_id:
+            session["user_id"] = valid_user_id
+            session["user_name"] = catalogue.get_user_name(valid_user_id)
+            session["csrf_token"] = secrets.token_hex(16)
+            return redirect("/")
+        else:
+            return "Virhe: Väärä tunnus tai salasana. <a href=\"/kirjaudu\"> Palaa takaisin </a>"
     
 @app.route("/luo_kayttaja", methods=["POST"])
 def create_user():
