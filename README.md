@@ -23,6 +23,7 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
+* Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
 
 ## Suunniteltuja ominaisuuksia
 * CSS ja ulkoasun kehittäminen
