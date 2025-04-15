@@ -171,7 +171,10 @@ def get_user_stats(user_id, collections_by_user):
 	for c in collections_by_user:
 		n = len(get_works_included_in(c["id"]))
 		sum_works_in_collections += n
-	avg_works_in_collections = sum_works_in_collections / len(collections_by_user)
+	if collections_by_user:
+	    avg_works_in_collections = sum_works_in_collections / len(collections_by_user)
+	else:
+	    avg_works_in_collections = 0
 	result = {}
 	result["works"] = work_count
 	result["collections"] = collection_count
