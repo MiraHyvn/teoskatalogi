@@ -55,12 +55,14 @@
                     {{ c["title"] }}: {{c["value"] }}.
                 {% endfor %}
             </li>
+            {% if collections[w["id"]] %}
             <li>
                 Sisältyy kokoelmiin: 
                 {% for c in collections[w["id"]] %}
                     {{ c["title"] }}.
                 {% endfor %}
             </li>
+            {% endif %}
             <li>
                 {% if session.user_id == w["user_id"] %}
                     <form action="/poista_teos/{{w["id"]}}" method="post" style="display:inline"> 
