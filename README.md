@@ -26,7 +26,9 @@ nimi katkeaa välilyönnin kohdalta.
 * Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
 
 ## Suunniteltuja ominaisuuksia
+* Joku keino valita teoksia kokoelmiin
+* Vuosiluvun lisääminen teostietoihin
+* Teoksen tekijän nimen pitäisi voida olla eri kuin käyttäjätunnus
 * CSS ja ulkoasun kehittäminen
-* Tietokannan laajentaminen
-* Tietoturvan parantaminen
-* Saavutettavuuden parantaminen
+* Enemmän teostietoja ja kokoelman ominaisuuksia
+* Saavutettavuusselvitys

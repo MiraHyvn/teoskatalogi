@@ -144,6 +144,7 @@ def user(user_id):
     w = catalogue.get_works_by_user(user_id)
     c = catalogue.get_collections_by_user(user_id)
     s = catalogue.get_user_stats(user_id, c)
+    print(c)
     return render_template("user.html", works = w, collections = c, stats = s)
 
 def check_csrf():
