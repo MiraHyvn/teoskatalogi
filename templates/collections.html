@@ -7,13 +7,14 @@
     <!-- Ylävalikko -->
     <h1> <a href = "/"> Teoskatalogi </a> </h1>
     <ul>
+        <li> <a href="/"> Teokset </a> </li>
+        <li><a href="/kokoelmat"> Kokoelmat </a></li>
+        <li><a href="/haku"> Haku </a></li>
         {% if session.user_id %}
             <li>
                 <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
             </li>
         {% endif %}
-        <li><a href="/haku"> Haku </a></li>
-        <li><a href="/kokoelmat"> Kokoelmat </a></li>
         {% if session.user_id %}
             <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
         {% else %}

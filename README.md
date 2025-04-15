@@ -23,6 +23,8 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
+* Käyttäjäsivulla tulee internal error: division by zero, jos yhtään teosta ei
+ole lisätty mihinkään kokoelmaan.
 
 ## Suunniteltuja ominaisuuksia
 * CSS ja ulkoasun kehittäminen
