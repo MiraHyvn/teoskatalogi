@@ -99,6 +99,18 @@ def add_work_to_collection(work_id, collection_title, adder_user_id):
     database.execute(sql2, [work_id, new_collection_id])
     return
 
+def get_collection(collection_title):
+    sql = """SELECT 
+        C.title, C.user_id, U.name AS user_name 
+    FROM 
+        Collections C, Users U
+    WHERE 
+        C.title = ? AND C.user_id = U.id"""
+    if not database.query:
+        return None
+    return database.query(sql, [collection_title])[0]
+    
+
 def get_collections_that_include(work_id):
     sql = """SELECT
         C.title, C.user_id, U.name AS user_name

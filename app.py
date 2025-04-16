@@ -121,7 +121,12 @@ def create_collection():
 def add_to_collection(work_id):
     require_login()
     check_csrf()
+    # Should refer to collection by id rather than title?
     collection_title = request.form["collection_title_input"]
+    collection = catalogue.get_collection(collection_title)
+    print(collection)
+    if collection["user_id"] != session["user_id"]:
+        abort(403)
     catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     return redirect("/")
 
