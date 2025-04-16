@@ -11,12 +11,13 @@ app.secret_key = config.secret_key
 def index():
     works = catalogue.get_all_works()
     all_classes = catalogue.get_all_classes()
-    collections = {}
+    all_collections = catalogue.get_all_collections()
     work_classes = {}
+    w_collections = {}
     for w in works:
         work_classes[w["id"]] = catalogue.get_classes(w["id"]) 
-        collections[w["id"]] = catalogue.get_collections_that_include(w["id"])
-    return render_template("index.html", works=works, all_classes = all_classes, work_classes = work_classes, collections=collections)
+        w_collections[w["id"]] = catalogue.get_collections_that_include(w["id"])
+    return render_template("index.html", works=works, all_classes = all_classes, work_classes = work_classes, all_collections = all_collections, w_collections=w_collections)
 
 @app.route("/rekisteroidy")
 def register():
@@ -119,7 +120,7 @@ def create_collection():
 @app.route("/liita_kokoelmaan/<int:work_id>", methods=["POST"])
 def add_to_collection(work_id):
     require_login()
-    check_csrf()    
+    check_csrf()
     collection_title = request.form["collection_title_input"]
     catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     return redirect("/")

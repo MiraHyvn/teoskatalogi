@@ -33,8 +33,8 @@
             <ul style="list-style-type: none">
                 <li>Lisää uusi teos:</li>
                 <li>Nimi: <input type="text" name="work_title_input" maxlength="50"/></li>
-                <li>Vuosi: <input type="text" value="2025"</li>
-                <li>Tekniikka: <select name="medium_input"></li>
+                <li>Vuosi: <input type="text" value="2025"/></li>
+                <li>Tekniikka: <select name="medium_input">
                 <option value="other"> (valitse) </option>
                     {% for cl in all_classes["tekniikka"] %}
                         <option value="{{cl}}"> {{cl}} </option>
@@ -55,14 +55,28 @@
                     {{ c["title"] }}: {{c["value"] }}.
                 {% endfor %}
             </li>
-            {% if collections[w["id"]] %}
             <li>
-                Sisältyy kokoelmiin: 
-                {% for c in collections[w["id"]] %}
-                    {{ c["title"] }}.
-                {% endfor %}
+                {% if w_collections[w["id"]] %}
+                    Sisältyy kokoelmiin: 
+                    {% for c in w_collections[w["id"]] %}
+                        {{ c["title"] }}.
+                    {% endfor %}
+                {% else %}
+                    Teos ei sisälly kokoelmiin.
+                {% endif %}
+                {% if session.user_id %}
+                    <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
+                    <select name="collection_title_input">
+                        <option value=""> (valitse kokoelma) </option>
+                        {% for c in all_collections %}
+                            <option value="{{c["title"]}}"> {{c["title"]}} </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="+" />                
+                    <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+                    </form>
+                {% endif %}
             </li>
-            {% endif %}
             <li>
                 {% if session.user_id == w["user_id"] %}
                     <form action="/poista_teos/{{w["id"]}}" method="post" style="display:inline"> 
@@ -73,7 +87,7 @@
                         <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
                         <input type="submit" value="Muokkaa" />
                     </form>
-                {% endif %}
+                {% endif %}        
             </li>
         </ul>
     {% endfor %}

@@ -24,9 +24,10 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 nimi katkeaa välilyönnin kohdalta.
 * Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
 * Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
+* Saman teoksen voi liittää samaan kokoelmaan monta kertaa
 
 ## Suunniteltuja ominaisuuksia
-* Joku keino valita teoksia kokoelmiin
+* Joku keino poistaa teoksia kokoelmista
 * Vuosiluvun lisääminen teostietoihin
 * Teoksen tekijän nimen pitäisi voida olla eri kuin käyttäjätunnus
 * CSS ja ulkoasun kehittäminen
