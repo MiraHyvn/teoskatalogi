@@ -21,7 +21,6 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
-* Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia

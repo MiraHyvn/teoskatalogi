@@ -11,13 +11,16 @@ app.secret_key = config.secret_key
 def index():
     works = catalogue.get_all_works()
     all_classes = catalogue.get_all_classes()
-    all_collections = catalogue.get_all_collections()
+    if "user_id" in session:
+        u_collections = catalogue.get_collections_by_user(session["user_id"])
+    else:
+        u_collections = None
     work_classes = {}
     w_collections = {}
     for w in works:
         work_classes[w["id"]] = catalogue.get_classes(w["id"]) 
         w_collections[w["id"]] = catalogue.get_collections_that_include(w["id"])
-    return render_template("index.html", works=works, all_classes = all_classes, work_classes = work_classes, all_collections = all_collections, w_collections=w_collections)
+    return render_template("index.html", works=works, all_classes = all_classes, work_classes = work_classes, u_collections = u_collections, w_collections=w_collections)
 
 @app.route("/rekisteroidy")
 def register():
