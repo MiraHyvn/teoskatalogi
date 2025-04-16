@@ -112,7 +112,7 @@ def get_collection(collection_title):
     
 
 def get_collections_that_include(work_id):
-    sql = """SELECT
+    sql = """SELECT DISTINCT
         C.title, C.user_id, U.name AS user_name
     FROM
         Collections C, Works W, WorksInCollection WC, Users U
@@ -145,7 +145,17 @@ def get_collections_by_user(user_id):
             AND W.deleted = 0
         GROUP BY C.id;
 	"""
-	return database.query(sql, [user_id])
+	query_result = database.query(sql, [user_id])
+	if not query_result:
+	    sql = """SELECT 
+	            C.id, C.title, C.user_id, U.name AS user_name, 0 AS work_count
+	        FROM
+	            Collections C, Users U
+	        WHERE
+	            C.user_id = U.id AND C.user_id = ?"""
+	    return database.query(sql, [user_id])
+	else:
+	    return query_result
 
 def get_works_included_in(collection_id):
     sql = """SELECT 
