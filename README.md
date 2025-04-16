@@ -1,8 +1,9 @@
 # Teoskatalogi
 Tietokanta kuvataideteosten teostietoja varten.
 
-Teostiedot sisältävät teoksen nimen ja sen käyttäjätunnuksen, joka on 
-tallentanut teoksen tietokantaan.
+Katalogi on taideteosten listaamista varten. Käyttäjä voi lisätä katalogiin
+teoksen tiedot kuten teoksen nimen, tekijän nimen ja tekniikan. Käyttäjä
+voi muodostaa katalogissa olevista teoksista kokoelmia.
 
 ## Ominaisuudet
 * Käyttäjä pystyy rekisteröitymään ja kirjautumaan sisään katalogiin.
@@ -20,13 +21,15 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
+* Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
-* Kokoelmaan pitäisi voida liittää teoksia vain kokoelman tekijän.
 * Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
 * Saman teoksen voi liittää samaan kokoelmaan monta kertaa
+* Käyttäjän syötteiden tarkastaminen
 
 ## Suunniteltuja ominaisuuksia
+* Käyttöönotto-ohjeet testaamista varten Flask-ympäristöllä
 * Joku keino poistaa teoksia kokoelmista
 * Vuosiluvun lisääminen teostietoihin
 * Teoksen tekijän nimen pitäisi voida olla eri kuin käyttäjätunnus
