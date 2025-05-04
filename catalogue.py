@@ -132,9 +132,9 @@ def get_all_collections():
     return database.query(sql)
     
 def get_collections_by_user(user_id):
-	sql = """SELECT 
-	        C.id, C.title, C.user_id, U.name AS user_name,
-	        count(W.id) AS work_count
+    sql = """SELECT 
+            C.id, C.title, C.user_id, U.name AS user_name,
+            count(W.id) AS work_count
         FROM
             Collections C, Users U, WorksInCollection WC, Works W
         WHERE
@@ -144,18 +144,31 @@ def get_collections_by_user(user_id):
             AND WC.work_id = W.id 
             AND W.deleted = 0
         GROUP BY C.id;
-	"""
-	query_result = database.query(sql, [user_id])
-	if not query_result:
-	    sql = """SELECT 
-	            C.id, C.title, C.user_id, U.name AS user_name, 0 AS work_count
-	        FROM
-	            Collections C, Users U
-	        WHERE
-	            C.user_id = U.id AND C.user_id = ?"""
-	    return database.query(sql, [user_id])
-	else:
-	    return query_result
+    """
+    query_result_1 = database.query(sql, [user_id])
+    sql = """SELECT 
+            C.id, C.title, C.user_id, U.name AS user_name, 0 AS work_count
+        FROM
+            Collections C, Users U
+        WHERE
+            C.user_id = U.id AND C.user_id = ?;
+    """
+    query_result_2 = database.query(sql, [user_id])
+    result = []
+    for row in query_result_2:
+        count = 0
+        for count_row in query_result_1:
+            if count_row["id"] == row["id"]:
+                count = count_row["work_count"]
+        result_row = {
+            "id": row["id"],
+            "title": row["title"],
+            "user_id": row["user_id"],
+            "user_name": row["user_name"],
+            "work_count": count
+        }
+        result.append(result_row)
+    return result
 
 def get_works_included_in(collection_id):
     sql = """SELECT 

@@ -127,14 +127,13 @@ def add_to_collection(work_id):
     # Should refer to collection by id rather than title?
     collection_title = request.form["collection_title_input"]
     collection = catalogue.get_collection(collection_title)
-    print(collection)
     if collection["user_id"] != session["user_id"]:
         abort(403)
     try:
         catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     except sqlite3.IntegrityError:
         # Requested to add something that already exists => don't do anything
-        print("add to collection")
+        return("Virhe: Teos on jo kokoelmassa")
     return redirect("/")
 
 @app.route("/kokoelmat")
@@ -157,7 +156,6 @@ def user(user_id):
     w = catalogue.get_works_by_user(user_id)
     c = catalogue.get_collections_by_user(user_id)
     s = catalogue.get_user_stats(user_id, c)
-    print(c)
     return render_template("user.html", works = w, collections = c, stats = s)
 
 def check_csrf():
