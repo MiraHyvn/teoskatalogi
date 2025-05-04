@@ -21,7 +21,9 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
-* Teoksen muuttaminen aiheuttaa "Database is locked" -virheen
+* Teoksen muuttaminen aiheuttaa "Database is locked" -virheen, jos sitä ennen on liitetty teoksia kokoelmiin
+* Teokset-sivulla kokoelmavalikossa ei ole kaikkia vaihtoehtoja
+* Jos lisätään teos tai kokoelma, ja nimikenttä jätetään tyhjäksi, seuraa Forbidden 403
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
 * Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
