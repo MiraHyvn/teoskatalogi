@@ -41,7 +41,7 @@
         <ul>
             <li>Lisää uusi teos:</li>
             <li>Nimi: <input type="text" name="work_title_input" maxlength="50" required /></li>
-            <li>Vuosi: <input type="text" value="2025" /></li>
+            <li>Vuosi: <input type="text" value="2025" name="year_input"/></li>
             <li>Tekniikka: <select name="medium_input">
                     <option value="other"> (valitse) </option>
                     {% for cl in all_classes["tekniikka"] %}
@@ -58,7 +58,7 @@
     <ul>
         <li>
             <i class="capitalize">{{ w["title"] }}.</i>
-            <span class="capitalize">{{w["user_name"]}} 2025. </span>
+            <span class="capitalize">{{w["user_name"]}} {{w["year"]}}. </span>
             {% for c in work_classes[w["id"]] %}
             <span class="capitalize">{{ c["title"] }}: {{c["value"] }}.</span>
             {% endfor %}

@@ -7,8 +7,9 @@ CREATE TABLE Users (
 CREATE TABLE Works (
     id INTEGER PRIMARY KEY,
     title TEXT,
-    	user_id INTEGER REFERENCES Users,
-    	deleted INTEGER DEFAULT 0
+    user_id INTEGER REFERENCES Users,
+    year INTEGER,
+    deleted INTEGER DEFAULT 0
 );
 
 CREATE TABLE Collections (

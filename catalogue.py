@@ -29,7 +29,7 @@ def check_password(given_username, given_password):
 
 def get_all_works():
     sql = """SELECT 
-        W.id, W.title, W.user_id, U.name AS user_name
+        W.id, W.title, W.user_id, U.name AS user_name, W.year
     FROM 
         Works W, Users U
     WHERE
@@ -40,7 +40,7 @@ def get_all_works():
 
 def get_work(work_id):
     sql = """SELECT 
-        W.id, W.title, W.user_id, U.name AS user_name
+        W.id, W.title, W.user_id, U.name AS user_name, W.year
     FROM 
         Works W, Users U
     WHERE
@@ -55,7 +55,7 @@ def get_work(work_id):
 
 def get_works_by_user(user_id):
     sql = """SELECT DISTINCT
-		W.id, W.title, W.user_id, U.name AS user_name
+		W.id, W.title, W.user_id, U.name AS user_name, W.year
 	FROM
 		Works W, Users U
 	WHERE
@@ -63,9 +63,9 @@ def get_works_by_user(user_id):
     return database.query(sql, [user_id])
 
 
-def create_work(new_work_title, classes, creator_user_id):
-    sql1 = "INSERT INTO Works (title, user_id) VALUES (?, ?)"
-    database.execute(sql1, [new_work_title, creator_user_id])
+def create_work(new_work_title, classes, creator_user_id, year):
+    sql1 = "INSERT INTO Works (title, user_id, year) VALUES (?, ?, ?)"
+    database.execute(sql1, [new_work_title, creator_user_id, year])
     new_work_id = database.get_last_insert_id()
     for c in classes:
         sql2 = """INSERT INTO WorkClasses (work_id, class_id)

@@ -87,9 +87,10 @@ def create_work():
     medium_input = request.form["medium_input"]
     if len(work_title_input) == 0 or len(work_title_input) > 50:
         abort(403)
+    year_input = request.form["year_input"]
     user_id = session["user_id"]
     classes = {"tekniikka": medium_input}
-    catalogue.create_work(work_title_input, classes, user_id)
+    catalogue.create_work(work_title_input, classes, user_id, year_input)
     return redirect("/")
 
 
