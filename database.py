@@ -9,12 +9,16 @@ def connect():
 
 
 def execute(sql, parameters=[]):
-    print(f"Execute: {sql}")
     connection = connect()
-    result = connection.execute(sql, parameters)
-    connection.commit()
-    g.last_insert_id = result.lastrowid
-    print("Execute: ok, close")
+    # In case of IntegrityError the connection should be closed.
+    # Raise the same exception again so it can be handled elsewhere too.
+    try:
+        result = connection.execute(sql, parameters)
+        connection.commit()
+        g.last_insert_id = result.lastrowid
+    except sqlite3.IntegrityError:
+        connection.close()
+        raise sqlite3.IntegrityError
     connection.close()
 
 

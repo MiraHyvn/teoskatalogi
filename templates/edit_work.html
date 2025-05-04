@@ -33,10 +33,10 @@
     <p class="flash"> {{m}} </p>
     {% endfor %}
 
-  <form action="/muokkaa_teosta/{{work[" id"]}}" method="post">
+  <form action="/muokkaa_teosta/{{work["id"]}}" method="post">
     <input type="hidden" name="csrf_token" value="{{session.csrf_token}}"" />
       <p>
-        Nimi: <input type=" text" name="title_input" value="{{work[" title"]}}" required />
+        Nimi: <input type=" text" name="title_input" value="{{work["title"]}}" required />
     </p>
     <input type="submit" value="Tallenna" />
   </form>

@@ -118,9 +118,10 @@ def get_collection(collection_title):
         Collections C, Users U
     WHERE 
         C.title = ? AND C.user_id = U.id"""
-    if not database.query:
-        return None
-    return database.query(sql, [collection_title])[0]
+    result = database.query(sql, [collection_title])
+    if result:
+        return result[0]
+    return None
 
 
 def get_collections_that_include(work_id):

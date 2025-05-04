@@ -154,6 +154,8 @@ def add_to_collection(work_id):
     # Should refer to collection by id rather than title?
     collection_title = request.form["collection_title_input"]
     collection = catalogue.get_collection(collection_title)
+    if not collection:
+        abort(404)
     if collection["user_id"] != session["user_id"]:
         abort(403)
     try:
