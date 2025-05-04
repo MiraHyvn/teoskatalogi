@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Teoskatalogi</title>
+    <title>Teoskatalogi</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
     <!-- Ylävalikko -->
-    <h1> <a href = "/"> Teoskatalogi </a> </h1>
-    <ul>
+    <h1> <a href="/"> Teoskatalogi </a> </h1>
+    <ul class="hlist">
         <li> <a href="/"> Teokset </a> </li>
         <li><a href="/kokoelmat"> Kokoelmat </a></li>
         <li><a href="/haku"> Haku </a></li>
         {% if session.user_id %}
-            <li>
-                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
-            </li>
+        <li>
+            <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+        </li>
         {% endif %}
         {% if session.user_id %}
-            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
         {% else %}
-            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
         {% endif %}
     </ul>
     <hr />
+
     <!-- Flash-viestit -->
     {% for m in get_flashed_messages() %}
-        <p> {{m}} </p>
+    <p class="flash"> {{m}} </p>
     {% endfor %}
 
     <!-- Teokset -->
     <h2> Teokset </h2>
-    
+
     <!-- Lisää uusi teos -->
     {% if session.user_id %}
-        <form action="/luo_teos" method="post">
-            <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-            <ul style="list-style-type: none">
-                <li>Lisää uusi teos:</li>
-                <li>Nimi: <input type="text" name="work_title_input" maxlength="50" required/></li>
-                <li>Vuosi: <input type="text" value="2025"/></li>
-                <li>Tekniikka: <select name="medium_input">
-                <option value="other"> (valitse) </option>
+    <form action="/luo_teos" method="post">
+        <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+        <ul>
+            <li>Lisää uusi teos:</li>
+            <li>Nimi: <input type="text" name="work_title_input" maxlength="50" required /></li>
+            <li>Vuosi: <input type="text" value="2025" /></li>
+            <li>Tekniikka: <select name="medium_input">
+                    <option value="other"> (valitse) </option>
                     {% for cl in all_classes["tekniikka"] %}
-                        <option value="{{cl}}"> {{cl}} </option>
+                    <option value="{{cl}}"> {{cl}} </option>
                     {% endfor %}
                 </select>
-                <li><input type="submit" value="Tallenna" /></li>
-            </ul>
-        </form>
-    {% endif %}
-        
-    <!-- Teosluettelo -->    
-    {% for w in works %}
-        <ul style="list-style-type: none">
-            <li style="text-transform: capitalize">
-                <i>{{ w["title"] }}.</i>
-                {{w["user_name"]}} 2025.
-                {% for c in work_classes[w["id"]] %}
-                    {{ c["title"] }}: {{c["value"] }}.
-                {% endfor %}
-            </li>
-            <li>
-                {% if w_collections[w["id"]] %}
-                    Sisältyy kokoelmiin: 
-                    {% for c in w_collections[w["id"]] %}
-                        {{ c["title"] }}.
-                    {% endfor %}
-                {% else %}
-                    Teos ei sisälly kokoelmiin.
-                {% endif %}
-                {% if session.user_id and u_collections %}
-                    <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
-                    <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-                    <select name="collection_title_input">
-                        {% for c in u_collections %}
-                            <option value="{{c["title"]}}"> {{c["title"]}} </option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit" value="+" />                
-                    </form>
-                {% endif %}
-            </li>
-            <li>
-                {% if session.user_id == w["user_id"] %}
-                    <form action="/poista_teos/{{w["id"]}}" method="post" style="display:inline"> 
-                        <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-                        <input type="submit" value="Poista" />
-                    </form>
-                    <form action="/muokkaa_teosta/{{w["id"]}}" method="get" style="display:inline"> 
-                        <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-                        <input type="submit" value="Muokkaa" />
-                    </form>
-                {% endif %}        
-            </li>
+            <li><input type="submit" value="Tallenna" /></li>
         </ul>
+    </form>
+    {% endif %}
+
+    <!-- Teosluettelo -->
+    {% for w in works %}
+    <ul>
+        <li>
+            <i class="capitalize">{{ w["title"] }}.</i>
+            <span class="capitalize">{{w["user_name"]}} 2025. </span>
+            {% for c in work_classes[w["id"]] %}
+            <span class="capitalize">{{ c["title"] }}: {{c["value"] }}.</span>
+            {% endfor %}
+        </li>
+        <li>
+            {% if w_collections[w["id"]] %}
+            Sisältyy kokoelmiin:
+            {% for c in w_collections[w["id"]] %}
+            {{ c["title"] }}.
+            {% endfor %}
+            {% else %}
+            Teos ei sisälly kokoelmiin.
+            {% endif %}
+            {% if session.user_id and u_collections %}
+            <form action="/liita_kokoelmaan/{{w[" id"]}}" method="post" >
+                <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+                <select name="collection_title_input">
+                    {% for c in u_collections %}
+                    <option value="{{c[" title"]}}"> {{c["title"]}} </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="+" />
+            </form>
+            {% endif %}
+        </li>
+        <li>
+            {% if session.user_id == w["user_id"] %}
+            <form action="/poista_teos/{{w[" id"]}}" method="post">
+                <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+                <input type="submit" value="Poista" />
+            </form>
+            <form action="/muokkaa_teosta/{{w[" id"]}}" method="get">
+                <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+                <input type="submit" value="Muokkaa" />
+            </form>
+            {% endif %}
+        </li>
+    </ul>
     {% endfor %}
 </body>
-</html>
 
+</html>

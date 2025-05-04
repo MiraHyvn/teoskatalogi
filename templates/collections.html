@@ -2,26 +2,32 @@
 <html>
 <head>
   <title>Teoskatalogi</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <!-- Ylävalikko -->
-    <h1> <a href = "/"> Teoskatalogi </a> </h1>
-    <ul>
+    <h1> <a href="/"> Teoskatalogi </a> </h1>
+    <ul class="hlist">
         <li> <a href="/"> Teokset </a> </li>
         <li><a href="/kokoelmat"> Kokoelmat </a></li>
         <li><a href="/haku"> Haku </a></li>
         {% if session.user_id %}
-            <li>
-                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
-            </li>
+        <li>
+            <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+        </li>
         {% endif %}
         {% if session.user_id %}
-            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
         {% else %}
-            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
         {% endif %}
     </ul>
     <hr />
+
+    <!-- Flash-viestit -->
+    {% for m in get_flashed_messages() %}
+    <p class="flash"> {{m}} </p>
+    {% endfor %}
 
     <!-- Kokoelmat -->
     <h2> Kokoelmat </h2>
@@ -30,7 +36,7 @@
     {% if session.user_id %}
         <form action="/luo_kokoelma" method="post">
             <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
-            <ul style="list-style-type: none">
+            <ul>
                 <li>Lisää uusi kokoelma:</li>
                 <li>Nimi: <input type="text" name="collection_title_input" maxlength="50"/></li>
                 <li><input type="submit" value="Tallenna" /></li>
@@ -39,21 +45,17 @@
     {% endif %}
 
     <!-- Kokoelmaluettelo -->
-    {% for c in collections %}
-    <h3> {{c["title"]}} </h3>
-    <p> Tekijä: {{c["user_name"] }} </p>
-    <p>
-    Teokset:
-    {% for w in works[c["id"]] %}
-      {{w["title"]}}, 
-    {% endfor %}
-    </p>
-  {% endfor %}
+    <ul>
+        {% for c in collections %}
+            <li><h3> {{c["title"]}} </h3> </li>
+            <li class="capitalize"> Tekijä: {{c["user_name"] }} </li>
+            <li>
+            Teokset:
+            {% for w in works[c["id"]] %}
+            {{w["title"]}}, 
+            {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
-
-
-
-
-<!--
-  <h1> Kokoelmat </h1>

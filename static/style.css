@@ -1,0 +1,55 @@
+body {
+    margin: 0 auto;
+    max-width: 50em;
+}
+
+* {
+    color: #014421;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, input, a {
+    color: darkslategrey;
+}
+
+.hlist {
+    list-style-type: none;
+    margin: 0;
+    margin-bottom: 3em;
+    padding: 0;
+    overflow: hidden;
+}
+
+.hlist li {
+    float: right;
+}
+
+.hlist li a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+h1 {
+    float: left;
+}
+
+form {
+    display:inline;
+}
+
+.flash {
+    color: brown;
+}
+
+.capitalize{
+    text-transform: capitalize;
+}

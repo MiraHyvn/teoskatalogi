@@ -1,23 +1,45 @@
 <!DOCTYPE html>
 <html>
-<title>
-  Muokkaa teostietoja
-</title>
-<body>
-  <h1>
+
+<head>
+  <link rel="stylesheet" href="/static/style.css">
+  <title>
     Muokkaa teostietoja
-  </h1>
+  </title>
+</head>
+
+<body>
+    <!-- Ylävalikko -->
+    <h1> <a href="/"> Teoskatalogi </a> </h1>
+    <ul class="hlist">
+        <li> <a href="/"> Teokset </a> </li>
+        <li><a href="/kokoelmat"> Kokoelmat </a></li>
+        <li><a href="/haku"> Haku </a></li>
+        {% if session.user_id %}
+        <li>
+            <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+        </li>
+        {% endif %}
+        {% if session.user_id %}
+        <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        {% else %}
+        <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        {% endif %}
+    </ul>
+    <hr />
+
     <!-- Flash-viestit -->
     {% for m in get_flashed_messages() %}
-        <p> {{m}} </p>
+    <p class="flash"> {{m}} </p>
     {% endfor %}
 
-    <form action="/muokkaa_teosta/{{work["id"]}}" method="post">
-      <input type="hidden" name="csrf_token" value="{{session.csrf_token}}"" />
+  <form action="/muokkaa_teosta/{{work[" id"]}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{session.csrf_token}}"" />
       <p>
-        Nimi: <input type="text" name="title_input" value="{{work["title"]}}" required/>
-      </p>
-      <input type="submit" value="Tallenna" />
-    </form>
+        Nimi: <input type=" text" name="title_input" value="{{work[" title"]}}" required />
+    </p>
+    <input type="submit" value="Tallenna" />
+  </form>
 </body>
+
 </html>

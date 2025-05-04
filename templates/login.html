@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="/static/style.css">    
     <title>Teoskatalogi</title>
 </head>
 <body>
     <!-- Ylävalikko -->
-    <h1> <a href = "/"> Teoskatalogi </a> </h1>
-    <ul>
+    <h1> <a href="/"> Teoskatalogi </a> </h1>
+    <ul class="hlist">
         <li> <a href="/"> Teokset </a> </li>
         <li><a href="/kokoelmat"> Kokoelmat </a></li>
         <li><a href="/haku"> Haku </a></li>
         {% if session.user_id %}
-            <li>
-                <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
-            </li>
+        <li>
+            <a href="/kayttaja/{{session.user_id}}">{{session.user_name}}</a>
+        </li>
         {% endif %}
         {% if session.user_id %}
-            <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
+        <li><a href="/kirjaudu_ulos"> Kirjaudu ulos </a></li>
         {% else %}
-            <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
+        <li><a href="/kirjaudu"> Kirjaudu sisään </a></li>
         {% endif %}
     </ul>
     <hr />
+
+    <!-- Flash-viestit -->
+    {% for m in get_flashed_messages() %}
+    <p class="flash"> {{m}} </p>
+    {% endfor %}
     
     <!-- Kirjaudu sisään -->    
     <h2> Kirjaudu sisään </h2>
