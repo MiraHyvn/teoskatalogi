@@ -49,10 +49,6 @@ teoksia.
 tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
-## Ratkaisemattomia ongelmia
-
-* Jos yritetään luoda käyttäjä, joka on jo olemassa, tai liittää teos kokoelmaan, johon se kuuluu jo, tietokanta menee lukkoon (database locked). IntegrityError käsitellään mutta yhteyttä ei suljeta missään kohtaa.
-
 ## Suunniteltuja ominaisuuksia
 
 * Selkeämpi rekisteröityminen
