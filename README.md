@@ -21,13 +21,10 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
-* Jos yritetään luoda käyttäjä, joka on jo olemassa, tai liittää teos kokoelmaan, johon se kuuluu jo, tietokanta menee lukkoon (database locked). IntegrityError käsitellään mutta yhteyttä ei suljeta missään kohtaa.
 * Jos lisätään teos tai kokoelma, ja nimikenttä jätetään tyhjäksi, seuraa Forbidden 403
 * Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
 nimi katkeaa välilyönnin kohdalta.
-* Funktio get_collections_by_user ei huomioi tyhjiä kokoelmia
-* Saman teoksen voi liittää samaan kokoelmaan monta kertaa
-* Käyttäjän syötteiden tarkastaminen
+* Jos yritetään luoda käyttäjä, joka on jo olemassa, tai liittää teos kokoelmaan, johon se kuuluu jo, tietokanta menee lukkoon (database locked). IntegrityError käsitellään mutta yhteyttä ei suljeta missään kohtaa.
 
 ## Suunniteltuja ominaisuuksia
 * Käyttöönotto-ohjeet testaamista varten Flask-ympäristöllä
