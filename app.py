@@ -50,7 +50,8 @@ def login():
             session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
-            return 'Virhe: Väärä tunnus tai salasana. <a href="/kirjaudu"> Palaa takaisin </a>'
+            flash("Väärä tunnus tai salasana.")
+            return redirect("/kirjaudu")
 
 
 @app.route("/luo_kayttaja", methods=["POST"])
@@ -65,7 +66,7 @@ def create_user():
     try:
         catalogue.create_user(username_input, password_input)
     except sqlite3.IntegrityError:
-        return "Virhe: Käyttäjää ei voitu luoda."
+        flash("Käyttäjää ei voitu luoda.")
     return redirect("/kirjaudu")
 
 
