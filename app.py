@@ -162,7 +162,7 @@ def add_to_collection(work_id):
         catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
     except sqlite3.IntegrityError:
         # Requested to add something that already exists => don't do anything
-        return "Virhe: Teos on jo kokoelmassa"
+        flash("Teos on jo kokoelmassa")
     return redirect("/")
 
 
