@@ -32,7 +32,11 @@
     {% endfor %}
 
     <!-- Teokset -->
-    <h2> Teokset </h2>
+    {% if works %}
+        <h2> Teokset </h2>
+    {% else %}
+        <p> Katalogissa ei ole vielä yhtään teosta. </p>
+    {% endif %}
 
     <!-- Lisää uusi teos -->
     {% if session.user_id %}

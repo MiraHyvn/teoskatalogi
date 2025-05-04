@@ -30,8 +30,11 @@
     {% endfor %}
 
     <!-- Kokoelmat -->
-    <h2> Kokoelmat </h2>
-
+    {% if collections %}
+        <h2> Kokoelmat </h2>
+    {% else %}
+        <p> Katalogissa ei ole vielä yhtään kokoelmaa. </p>
+    {% endif %}
     <!-- Luo uusi kokoelma -->
     {% if session.user_id %}
         <form action="/luo_kokoelma" method="post">
