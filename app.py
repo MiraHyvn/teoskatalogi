@@ -130,7 +130,11 @@ def add_to_collection(work_id):
     print(collection)
     if collection["user_id"] != session["user_id"]:
         abort(403)
-    catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
+    try:
+        catalogue.add_work_to_collection(work_id, collection_title, session["user_id"])
+    except sqlite3.IntegrityError:
+        # Requested to add something that already exists => don't do anything
+        print("add to collection")
     return redirect("/")
 
 @app.route("/kokoelmat")

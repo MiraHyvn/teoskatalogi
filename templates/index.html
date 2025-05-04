@@ -64,11 +64,10 @@
                 {% else %}
                     Teos ei sisälly kokoelmiin.
                 {% endif %}
-                {% if session.user_id %}
+                {% if session.user_id and u_collections %}
                     <form action="/liita_kokoelmaan/{{w["id"]}}" method="post" style="display:inline">
                     <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
                     <select name="collection_title_input">
-                        <option value=""> (valitse kokoelma) </option>
                         {% for c in u_collections %}
                             <option value="{{c["title"]}}"> {{c["title"]}} </option>
                         {% endfor %}

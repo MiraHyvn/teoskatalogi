@@ -20,7 +20,8 @@ CREATE TABLE Collections (
 CREATE TABLE WorksInCollection (
     id INTEGER PRIMARY KEY,
     work_id INTEGER REFERENCES Works,
-    collection_id INTEGER REFERENCES Collections
+    collection_id INTEGER REFERENCES Collections,
+    UNIQUE (work_id, collection_id)
 );
 
 CREATE TABLE Classes (
