@@ -5,6 +5,27 @@ Katalogi on taideteosten listaamista varten. Käyttäjä voi lisätä katalogiin
 teoksen tiedot kuten teoksen nimen, tekijän nimen ja tekniikan. Käyttäjä
 voi muodostaa katalogissa olevista teoksista kokoelmia.
 
+## Käyttöohjeet
+Luo venv-virtuaaliympäristö, asenna flask ja luo tietokanta:
+```
+$ make
+```
+Sovellusta voi tämän jälkeen ajaa virtuaaliympäristössä seuraavasti:
+```
+$ source venv/bin/activate
+(venv) $ flask run
+```
+Tämän ollessa käynnissä websivun pitäisi näkyä osoitteessa `localhost:5000`.
+
+Virtuaaliympäristöstä voi poistua seuraavasti:
+```
+(venv) $ deactivate
+```
+Sovelluksen poistaminen:
+```
+$ make remove
+```
+
 ## Ominaisuudet
 * Käyttäjä pystyy rekisteröitymään ja kirjautumaan sisään katalogiin.
 * Käyttäjä pystyy lisäämään katalogiin teoksia ja muuttamaan lisäämiensä teosten
