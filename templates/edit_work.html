@@ -7,10 +7,15 @@
   <h1>
     Muokkaa teostietoja
   </h1>
+    <!-- Flash-viestit -->
+    {% for m in get_flashed_messages() %}
+        <p> {{m}} </p>
+    {% endfor %}
+
     <form action="/muokkaa_teosta/{{work["id"]}}" method="post">
-      <input type="hidden" name="csrf_token" value={{session.csrf_token}} />
+      <input type="hidden" name="csrf_token" value="{{session.csrf_token}}"" />
       <p>
-        Nimi: <input type="text" name="title_input" value={{work["title"]}} />
+        Nimi: <input type="text" name="title_input" value="{{work["title"]}}" required/>
       </p>
       <input type="submit" value="Tallenna" />
     </form>

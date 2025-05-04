@@ -21,9 +21,6 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Käyttäjä pystyy valitsemaan teoksen tekniikan (luokittelu).
 
 ## Ratkaisemattomia ongelmia
-* Jos lisätään teos tai kokoelma, ja nimikenttä jätetään tyhjäksi, seuraa Forbidden 403
-* Jos lisätään teos, jonka nimessä on välilyönti, ja sen jälkeen muokataan sitä,
-nimi katkeaa välilyönnin kohdalta.
 * Jos yritetään luoda käyttäjä, joka on jo olemassa, tai liittää teos kokoelmaan, johon se kuuluu jo, tietokanta menee lukkoon (database locked). IntegrityError käsitellään mutta yhteyttä ei suljeta missään kohtaa.
 
 ## Suunniteltuja ominaisuuksia

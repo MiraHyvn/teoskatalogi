@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session, abort
+from flask import redirect, render_template, request, session, abort, flash
 import sqlite3, secrets
 import catalogue
 import config
@@ -31,7 +31,7 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     if request.method == "POST":
-        username_input = request.form["username_input"]
+        username_input = request.form["username_input"].strip()
         password_input = request.form["password_input"]
         valid_user_id = catalogue.check_password(username_input, password_input)
         if valid_user_id:
@@ -44,7 +44,10 @@ def login():
     
 @app.route("/luo_kayttaja", methods=["POST"])
 def create_user():
-    username_input = request.form["username_input"]
+    username_input = request.form["username_input"].strip()
+    if not username_input:
+        flash("Käyttäjätunnus ei saa olla tyhjä")
+        return redirect("/rekisteroidy")
     password_input = request.form["password_input"]
     if len(username_input) > 50 or len(username_input) == 0 or len(password_input) > 50:
         abort(403)
@@ -52,7 +55,7 @@ def create_user():
         catalogue.create_user(username_input, password_input)
     except sqlite3.IntegrityError:
         return "Virhe: Käyttäjää ei voitu luoda."
-    return redirect("/")
+    return redirect("/kirjaudu")
 
 @app.route("/kirjaudu_ulos")
 def logout():
@@ -64,7 +67,10 @@ def logout():
 def create_work():
     require_login()
     check_csrf()
-    work_title_input = request.form["work_title_input"]
+    work_title_input = request.form["work_title_input"].strip()
+    if not work_title_input:
+        flash("Teoksen nimi ei saa olla tyhjä")
+        return redirect("/")
     medium_input = request.form["medium_input"]
     if len(work_title_input) == 0 or len(work_title_input) > 50:    
         abort(403)
@@ -96,7 +102,10 @@ def muokkaa_teosta(work_id):
         return render_template("edit_work.html", work = work)
     if request.method == "POST":
         check_csrf()    
-        updated_title = request.form["title_input"]
+        updated_title = request.form["title_input"].strip()
+        if not updated_title:
+            flash("Nimi ei saa olla tyhjä")
+            return redirect(f"/muokkaa_teosta/{work_id}")
         catalogue.edit_work(work_id, "title", updated_title)
     return redirect("/")
 
