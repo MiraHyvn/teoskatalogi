@@ -45,10 +45,10 @@ tilastoja sekä käyttäjän lisäämät teokset ja kokoelmat.
 * Jos yritetään luoda käyttäjä, joka on jo olemassa, tai liittää teos kokoelmaan, johon se kuuluu jo, tietokanta menee lukkoon (database locked). IntegrityError käsitellään mutta yhteyttä ei suljeta missään kohtaa.
 
 ## Suunniteltuja ominaisuuksia
-* Käyttöönotto-ohjeet testaamista varten Flask-ympäristöllä
+* Selkeämpi rekisteröityminen
+* CSS ja ulkoasun kehittäminen
 * Joku keino poistaa teoksia kokoelmista
+* Esteellisyyden arvioiminen
 * Vuosiluvun lisääminen teostietoihin
 * Teoksen tekijän nimen pitäisi voida olla eri kuin käyttäjätunnus
-* CSS ja ulkoasun kehittäminen
 * Enemmän teostietoja ja kokoelman ominaisuuksia
-* Saavutettavuusselvitys
